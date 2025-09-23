@@ -1,4 +1,4 @@
-import Image from "next/image";
+
 
 export default function Home() {
   return (
@@ -12,7 +12,7 @@ export default function Home() {
           height={38}
           priority
         /> */}
-          test
+        home
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
          
