@@ -1,12 +1,12 @@
-"use-client"
-import { useState, useEffect } from "react";
-import { commonService } from "@/lib/api/services/common.service";
+'use-client';
+import { useState, useEffect } from 'react';
+import { commonService } from '@/lib/api/services/common.service';
 
 // import { clearClientTokens, setClientAccessToken } from "@/lib/api/utils/token";
 
-import { ApiError } from "@/lib/api/utils/error";
+import { ApiError } from '@/lib/api/utils/error';
 // import { hasToken } from "@/lib/api/utils/token";
-import { ApiResponse } from "@/lib/api/types";
+import { ApiResponse } from '@/lib/api/types';
 
 export function useCommon() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -29,11 +29,11 @@ export function useCommon() {
     }
   };
 
-   const getApi = async () => {
+  const getApi = async () => {
     const res = await handleAction(() => commonService.getPageHome());
     if (res.data && res.isSuccess) {
-    //   setData(res.data); // ✅ เก็บข้อมูลไว้ใน state
-      console.log("✅ success", res);
+      //   setData(res.data); // ✅ เก็บข้อมูลไว้ใน state
+      // console.log('✅ success', res);
     }
     return res;
   };

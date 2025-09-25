@@ -1,4 +1,4 @@
-const ACCESS_TOKEN_KEY = "access_token";
+const ACCESS_TOKEN_KEY = 'access_token';
 
 /**
  * เซ็ต access token ในฝั่ง client
@@ -25,48 +25,47 @@ export const getServerToken = (cookieString?: string): string | null => {
   if (!cookieString) return null;
 
   try {
-   return getCookie(cookieString,ACCESS_TOKEN_KEY)
+    return getCookie(cookieString, ACCESS_TOKEN_KEY);
   } catch (error) {
-    console.error("Error getting server token:", error);
+    console.error('Error getting server token:', error);
     return null;
   }
 };
 
-export const getCookie = (cookieString: string,key:string): string | null => {
+export const getCookie = (cookieString: string, key: string): string | null => {
   if (!cookieString) return null;
 
   try {
-    const cookies = cookieString.split(";");
+    const cookies = cookieString.split(';');
     for (const cookie of cookies) {
-      const [name, value] = cookie.trim().split("=");
+      const [name, value] = cookie.trim().split('=');
       if (name === key) {
         if (value) {
-          console.log("cookie found");
+          console.log('cookie found');
         } else {
-          console.log("cookie empty");
+          console.log('cookie empty');
         }
         return value;
       }
     }
     return null;
   } catch (error) {
-    console.error("Error getting server cookie:", error);
+    console.error('Error getting server cookie:', error);
     return null;
   }
 };
-
 
 /**
  * ดึง access token จาก client storage
  * @returns {string|null} access token หรือ null ถ้าไม่มี
  */
 export const getClientToken = (): string | null => {
-  if (typeof document === "undefined") {
+  if (typeof document === 'undefined') {
     return null;
   }
-  const cookies = document.cookie.split(";");
+  const cookies = document.cookie.split(';');
   for (const cookie of cookies) {
-    const [name, value] = cookie.trim().split("=");
+    const [name, value] = cookie.trim().split('=');
     if (name === ACCESS_TOKEN_KEY) {
       return value;
     }
@@ -80,7 +79,7 @@ export const getClientToken = (): string | null => {
  * @returns {string | null} access token หรือ null ถ้าไม่มี
  */
 export const getToken = (cookieString?: string): string | null => {
-  const isServer = typeof window === "undefined";
+  const isServer = typeof window === 'undefined';
 
   if (isServer) {
     return getServerToken(cookieString);
@@ -110,14 +109,14 @@ export const isTokenExpired = (cookieString?: string): boolean => {
 
   try {
     // แยกส่วน payload จาก JWT token
-    const payload = token.split(".")[1];
+    const payload = token.split('.')[1];
     const decodedPayload = JSON.parse(atob(payload));
 
     // ตรวจสอบเวลาหมดอายุ (exp) ใน payload
     const expirationTime = decodedPayload.exp * 1000; // แปลงเป็น milliseconds
     return Date.now() >= expirationTime;
   } catch (error) {
-    console.error("Error checking token expiration:", error);
+    console.error('Error checking token expiration:', error);
     return true; // ถ้ามีข้อผิดพลาด สมมติว่า token หมดอายุแล้ว
   }
 };
@@ -127,13 +126,13 @@ export const isTokenExpired = (cookieString?: string): boolean => {
  * @param token JWT token
  * @returns {any} ข้อมูล payload หรือ null ถ้าไม่สามารถถอดรหัสได้
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 export const decodeToken = (token: string): any => {
   try {
-    const payload = token.split(".")[1];
+    const payload = token.split('.')[1];
     return JSON.parse(atob(payload));
   } catch (error) {
-    console.error("Error decoding token:", error);
+    console.error('Error decoding token:', error);
     return null;
   }
 };
@@ -152,7 +151,7 @@ export const getUserIdFromToken = (): string | null => {
     // ปรับตามโครงสร้าง payload ของคุณ (เช่น userId, user_id, sub, etc.)
     return payload?.userId || payload?.user_id || payload?.sub || null;
   } catch (error) {
-    console.error("Error getting user ID from token:", error);
+    console.error('Error getting user ID from token:', error);
     return null;
   }
 };
@@ -163,8 +162,7 @@ export const hasToken = (): boolean => {
   return !!token;
 };
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default {
+const tokenUtils = {
   setClientAccessToken,
   setClientTokens,
   getClientToken,
@@ -176,3 +174,5 @@ export default {
   getUserIdFromToken,
   hasToken,
 };
+
+export default tokenUtils;

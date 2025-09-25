@@ -1,44 +1,44 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import productIconMenu from "~/public/icon/sideMenu/ic-product.svg";
-import brandIconMenu from "~/public/icon/sideMenu/ic-brand.svg";
-import logo from "~/public/logo-dohome.svg";
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import productIconMenu from '~/public/icon/sideMenu/ic-product.svg';
+import brandIconMenu from '~/public/icon/sideMenu/ic-brand.svg';
+import logo from '~/public/logo-dohome.svg';
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
-} from "@/components/ui/sidebar";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+} from '@/components/ui/sidebar';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const items = [
   {
-    title: "สินค้า",
-    url: "/product",
+    title: 'สินค้า',
+    url: '/product',
     icon: productIconMenu,
     child: [
-      { title: "สินค้าทั้งหมด", url: "" },
-      { title: "Collection Overview", url: "/collection" },
+      { title: 'สินค้าทั้งหมด', url: '' },
+      { title: 'Collection Overview', url: '/collection' },
     ],
   },
   {
-    title: "แบรนด์",
-    url: "/brand",
+    title: 'แบรนด์',
+    url: '/brand',
     icon: brandIconMenu,
     child: [
-      { title: "แบรนด์ทั้งหมด", url: "" },
-      { title: "Brand Recommend", url: "/recommend" },
+      { title: 'แบรนด์ทั้งหมด', url: '' },
+      { title: 'Brand Recommend', url: '/recommend' },
     ],
   },
 ];
 type Props = {
-    updateBreadcrumb: (value:{title:string,url:string}[])=> void;
-}
-export const AppSidebar:React.FC<Props> = ({updateBreadcrumb}) => {
+  updateBreadcrumb: (value: { title: string; url: string }[]) => void;
+};
+export const AppSidebar: React.FC<Props> = ({ updateBreadcrumb }) => {
   const pathname = usePathname();
   const [expanded, setExpanded] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(items.map((i) => [i.title, false]))
@@ -56,36 +56,34 @@ export const AppSidebar:React.FC<Props> = ({updateBreadcrumb}) => {
     });
     setExpanded(next);
     // breadcrumb
-    const breadcrumb: {title:string,url:string}[] = [];
+    const breadcrumb: { title: string; url: string }[] = [];
 
     const parent = items.find(
       (item) =>
-        pathname.startsWith(item.url) ||
-        item.child?.some((c) => pathname === item.url + c.url)
+        pathname.startsWith(item.url) || item.child?.some((c) => pathname === item.url + c.url)
     );
 
     if (parent) {
-      breadcrumb.push({title:parent.title,url:parent.url});
+      breadcrumb.push({ title: parent.title, url: parent.url });
 
-      const child = parent.child?.find(
-        (c) => pathname === parent.url + c.url
-      );
+      const child = parent.child?.find((c) => pathname === parent.url + c.url);
 
       if (child) {
-        breadcrumb.push({title:child.title,url: parent.url + child.url});
+        breadcrumb.push({ title: child.title, url: parent.url + child.url });
       }
     }
 
-    console.log("Breadcrumb", breadcrumb);
-    updateBreadcrumb(breadcrumb)
+    console.log('Breadcrumb', breadcrumb);
+    updateBreadcrumb(breadcrumb);
   }, [pathname]);
 
   const toggleExpand = (title: string) => {
     setExpanded((prev) => {
       const isOpen = !!prev[title];
-      const next = Object.fromEntries(
-        items.map((i) => [i.title, false])
-      ) as Record<string, boolean>;
+      const next = Object.fromEntries(items.map((i) => [i.title, false])) as Record<
+        string,
+        boolean
+      >;
       next[title] = !isOpen;
       return next;
     });
@@ -95,7 +93,7 @@ export const AppSidebar:React.FC<Props> = ({updateBreadcrumb}) => {
     <Sidebar>
       <SidebarContent className="bg-[#343A40] shadow-[10px_0_14px_0_rgba(0,0,0,0.05)] p-[10px]">
         <SidebarGroup>
-          <Link href={"/"} className="flex w-full justify-center py-[20px]">
+          <Link href={'/'} className="flex w-full justify-center py-[20px]">
             <Image src={logo} alt="logo" width={57} height={60} />
           </Link>
 
@@ -104,26 +102,18 @@ export const AppSidebar:React.FC<Props> = ({updateBreadcrumb}) => {
               {items.map((item) => {
                 const isOpen = expanded[item.title] ?? false;
                 return (
-                  <div
-                    className="flex flex-col cursor-pointer"
-                    key={item.title}
-                  >
+                  <div className="flex flex-col cursor-pointer" key={item.title}>
                     <Link
                       href={item.url}
                       onClick={() => {
                         toggleExpand(item.title);
                       }}
                       className={`${
-                        isOpen ? "bg-[#f26529]" : ""
+                        isOpen ? 'bg-[#f26529]' : ''
                       } p-[10px] rounded-[10px] flex justify-between items-center`}
                     >
                       <div className="flex gap-[10px]">
-                        <Image
-                          src={item.icon}
-                          alt={item.title}
-                          width={24}
-                          height={24}
-                        />
+                        <Image src={item.icon} alt={item.title} width={24} height={24} />
                         <div className="text-[14px] flex items-center font-[400] text-white">
                           {item.title}
                         </div>
@@ -132,7 +122,7 @@ export const AppSidebar:React.FC<Props> = ({updateBreadcrumb}) => {
                         <button
                           type="button"
                           className={`${
-                            isOpen ? "rotate-180" : "rotate-0"
+                            isOpen ? 'rotate-180' : 'rotate-0'
                           } transition-transform duration-300 transform flex items-center justify-center`}
                         >
                           <svg
@@ -162,8 +152,8 @@ export const AppSidebar:React.FC<Props> = ({updateBreadcrumb}) => {
                             key={child.title}
                             className={`${
                               pathname === item.url + child.url
-                                ? "text-[#f26529] font-[600]"
-                                : "text-gray-300 hover:text-white"
+                                ? 'text-[#f26529] font-[600]'
+                                : 'text-gray-300 hover:text-white'
                             }  text-[13px] p-[10px] flex gap-[10px]`}
                           >
                             <div className="w-[24px]"></div>
@@ -181,4 +171,4 @@ export const AppSidebar:React.FC<Props> = ({updateBreadcrumb}) => {
       </SidebarContent>
     </Sidebar>
   );
-}
+};

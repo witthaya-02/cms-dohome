@@ -1,7 +1,7 @@
 /**
  * Utility สำหรับการสร้าง signature เพื่อใช้ใน API requests
  */
-import CryptoJS from "crypto-js";
+import CryptoJS from 'crypto-js';
 
 /**
  * สร้าง timestamp ปัจจุบัน
@@ -26,14 +26,13 @@ export function generateSignature(
   timestamp: number
 ): string {
   // แยก path และ query parameters
-  const [pathOnly] = endpoint.split("?");
+  const [pathOnly] = endpoint.split('?');
 
   let path = pathOnly;
-  if (!path.startsWith("/")) {
+  if (!path.startsWith('/')) {
     path = `/${path}`;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const params: Record<string, any> = {
     appId: appId,
     timestamp: timestamp,

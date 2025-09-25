@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const BrandRecommendPage = () => {
-  return (
-    <div>BrandRecommendPage</div>
-  )
-}
+  return <div>BrandRecommendPage</div>;
+};
 
-export default BrandRecommendPage
+export default BrandRecommendPage;

@@ -20,8 +20,8 @@ console.log('Environment variables:', {
 
 // ค่า configuration ที่จะใช้จริง
 export const API_CONFIG: ApiConfig = {
-  baseUrl: process.env.NEXT_PUBLIC_API_URL || "https://dohome-api-service-dev.azurewebsites.net",  
-  appKey: process.env.NEXT_PUBLIC_API_KEY || "e591a139-becd-4124-bd12-1b6625b19b7f",
-  appId: process.env.NEXT_PUBLIC_API_ID || "680b18783bc36174090bd9d1",
+  baseUrl: process.env.NEXT_PUBLIC_API_URL || 'https://dohome-api-service-dev.azurewebsites.net',
+  appKey: process.env.NEXT_PUBLIC_API_KEY || 'e591a139-becd-4124-bd12-1b6625b19b7f',
+  appId: process.env.NEXT_PUBLIC_API_ID || '680b18783bc36174090bd9d1',
   timeout: 30000, // 30 seconds
 };
