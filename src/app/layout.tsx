@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Prompt } from "next/font/google";
 import "./globals.css";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/add-slide";
 import LayoutClient from "@/components/layout/layoutClient";
 
+const prompt = Prompt({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["thai", "latin"],
+  variable: "--font-prompt",
+});
+
+// Keep Geist fonts as well
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -29,6 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
+       className={`${prompt.variable} ${geistSans.variable} ${geistMono.variable} font-prompt antialiased min-h-screen flex flex-col h-screen`}
       // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SidebarProvider>

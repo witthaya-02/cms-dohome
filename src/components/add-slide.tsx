@@ -2,8 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import productIconMenu from "~/public/icon/sideMenu/ic-product.svg";
-import brandIconMenu from "~/public/icon/sideMenu/ic-brand.svg";
+
+import productIconMenu from "~/public/icons/sideMenu/ic-product.svg";
+import brandIconMenu from "~/public/icons/sideMenu/ic-brand.svg";
+import storeIconMenu from "~/public/icons/sideMenu/ic-store.svg";
+
 import logo from "~/public/logo-dohome.svg";
 import {
   Sidebar,
@@ -34,11 +37,20 @@ const items = [
       { title: "Brand Recommend", url: "/recommend" },
     ],
   },
+  {
+    title: "จัดการร้านค้า",
+    url: "/store-management",
+    icon: storeIconMenu,
+    child: [
+      { title: "จัดการหน้าหลัก", url: "" },
+      { title: "Custom Page", url: "/custom-page" },
+    ],
+  },
 ];
 type Props = {
-    updateBreadcrumb: (value:{title:string,url:string}[])=> void;
-}
-export const AppSidebar:React.FC<Props> = ({updateBreadcrumb}) => {
+  updateBreadcrumb: (value: { title: string; url: string }[]) => void;
+};
+export const AppSidebar: React.FC<Props> = ({ updateBreadcrumb }) => {
   const pathname = usePathname();
   const [expanded, setExpanded] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(items.map((i) => [i.title, false]))
@@ -56,7 +68,7 @@ export const AppSidebar:React.FC<Props> = ({updateBreadcrumb}) => {
     });
     setExpanded(next);
     // breadcrumb
-    const breadcrumb: {title:string,url:string}[] = [];
+    const breadcrumb: { title: string; url: string }[] = [];
 
     const parent = items.find(
       (item) =>
@@ -65,19 +77,17 @@ export const AppSidebar:React.FC<Props> = ({updateBreadcrumb}) => {
     );
 
     if (parent) {
-      breadcrumb.push({title:parent.title,url:parent.url});
+      breadcrumb.push({ title: parent.title, url: parent.url });
 
-      const child = parent.child?.find(
-        (c) => pathname === parent.url + c.url
-      );
+      const child = parent.child?.find((c) => pathname === parent.url + c.url);
 
       if (child) {
-        breadcrumb.push({title:child.title,url: parent.url + child.url});
+        breadcrumb.push({ title: child.title, url: parent.url + child.url });
       }
     }
 
     console.log("Breadcrumb", breadcrumb);
-    updateBreadcrumb(breadcrumb)
+    updateBreadcrumb(breadcrumb);
   }, [pathname]);
 
   const toggleExpand = (title: string) => {
@@ -181,4 +191,4 @@ export const AppSidebar:React.FC<Props> = ({updateBreadcrumb}) => {
       </SidebarContent>
     </Sidebar>
   );
-}
+};
