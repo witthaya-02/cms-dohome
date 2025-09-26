@@ -291,7 +291,7 @@ export const Playground: Story = {
     hoverable: true,
     bordered: false,
     onSort: (field: string, order: 'asc' | 'desc') => {
-      console.log(`Sorting ${field} ${order}`);
+      console.log(`Sorting ss ${field} ${order}`);
     },
     onSearch: (field: string, value: string) => {
       console.log(`Searching ${field}: ${value}`);
