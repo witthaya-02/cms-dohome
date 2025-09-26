@@ -19,8 +19,8 @@ const meta: Meta<typeof BtnAction> = {
       options: ['submit', 'reset', 'button'],
     },
     color: {
-        control: 'text'
-    }
+      control: 'text',
+    },
   },
 };
 

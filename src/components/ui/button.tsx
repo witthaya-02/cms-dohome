@@ -56,12 +56,12 @@ function Button({
 type Props = {
   isActive: boolean;
   wording: string;
-  type: "submit" | "reset" | "button";
+  type: 'submit' | 'reset' | 'button';
   size?: { h?: number; w?: number };
   color?: string;
   uiBorder?: boolean;
   icon?: React.ReactNode;
-  onClick?: (e: React.MouseEvent) => void
+  onClick?: (e: React.MouseEvent) => void;
   className?: string;
 };
 
@@ -74,7 +74,7 @@ const BtnAction: React.FC<Props> = ({
   uiBorder,
   icon,
   onClick,
-  className
+  className,
 }) => {
   const styleOverride = isActive && color ? { backgroundColor: color } : {};
 
@@ -88,20 +88,16 @@ const BtnAction: React.FC<Props> = ({
       disabled={!isActive}
       onClick={handleClick}
       className={cn(
-        "flex items-center justify-center gap-2 rounded-[10px]",
+        'flex items-center justify-center gap-2 rounded-[10px]',
         isActive
           ? `cursor-pointer ${
-              uiBorder
-                ? "shadow-[0_0_0_1px_#F26529] text-orange"
-                : "bg-primary-hover text-white"
+              uiBorder ? 'shadow-[0_0_0_1px_#F26529] text-orange' : 'bg-primary-hover text-white'
             }`
           : `${
-              uiBorder
-                ? "shadow-[0_0_0_1px_#B8B8B8] text-[#B8B8B8]"
-                : "bg-[#B8B8B8] text-[#FFFFFF]"
+              uiBorder ? 'shadow-[0_0_0_1px_#B8B8B8] text-[#B8B8B8]' : 'bg-[#B8B8B8] text-[#FFFFFF]'
             }`,
-        size?.w ? "" : "w-full px-[18px]",
-        size?.h ? "" : "h-fit",
+        size?.w ? '' : 'w-full px-[18px]',
+        size?.h ? '' : 'h-fit',
         className
       )}
       {...(size?.w || size?.h

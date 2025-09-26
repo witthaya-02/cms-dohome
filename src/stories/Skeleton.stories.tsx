@@ -10,7 +10,7 @@ const meta: Meta<typeof Skeleton> = {
   argTypes: {
     className: {
       control: 'text',
-    }
+    },
   },
 };
 
