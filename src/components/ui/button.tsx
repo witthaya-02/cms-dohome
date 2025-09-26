@@ -53,4 +53,72 @@ function Button({
   );
 }
 
-export { Button, buttonVariants };
+type Props = {
+  isActive: boolean;
+  wording: string;
+  type: "submit" | "reset" | "button";
+  size?: { h?: number; w?: number };
+  color?: string;
+  uiBorder?: boolean;
+  icon?: React.ReactNode;
+  onClick?: (e: React.MouseEvent) => void
+  className?: string;
+};
+
+const BtnAction: React.FC<Props> = ({
+  isActive,
+  wording,
+  type,
+  size,
+  color,
+  uiBorder,
+  icon,
+  onClick,
+  className
+}) => {
+  const styleOverride = isActive && color ? { backgroundColor: color } : {};
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (!isActive) return;
+    onClick?.(e);
+  };
+  return (
+    <button
+      type={type}
+      disabled={!isActive}
+      onClick={handleClick}
+      className={cn(
+        "flex items-center justify-center gap-2 rounded-[10px]",
+        isActive
+          ? `cursor-pointer ${
+              uiBorder
+                ? "shadow-[0_0_0_1px_#F26529] text-orange"
+                : "bg-primary-hover text-white"
+            }`
+          : `${
+              uiBorder
+                ? "shadow-[0_0_0_1px_#B8B8B8] text-[#B8B8B8]"
+                : "bg-[#B8B8B8] text-[#FFFFFF]"
+            }`,
+        size?.w ? "" : "w-full px-[18px]",
+        size?.h ? "" : "h-fit",
+        className
+      )}
+      {...(size?.w || size?.h
+        ? {
+            style: {
+              ...styleOverride,
+              width: size?.w,
+              height: size?.h,
+            },
+          }
+        : {})}
+    >
+      {icon && icon}
+      {wording}
+    </button>
+  );
+};
+
+export default BtnAction;
+export { Button, buttonVariants, BtnAction };
