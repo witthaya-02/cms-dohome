@@ -129,9 +129,12 @@ const StoreManagement = () => {
             endDate: (item) => <div>{item.editDate}</div>,
             status: (item) => <div className="text-center">{item.status}</div>,
             action: (item) => (
-              <div onClick={()=> {
-                console.log(item)
-              }} className="flex gap-[10px] items-center justify-center">
+              <div
+                onClick={() => {
+                  console.log(item);
+                }}
+                className="flex gap-[10px] items-center justify-center"
+              >
                 <div className="cursor-pointer">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

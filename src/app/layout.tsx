@@ -4,7 +4,7 @@ import './globals.css';
 
 import { SidebarProvider } from '@/components/ui/sidebar';
 import LayoutClient from '@/components/layout/layoutClient';
-import { Prompt } from "next/font/google";
+import { Prompt } from 'next/font/google';
 
 const prompt = Prompt({
   weight: ['300', '400', '500', '600', '700'],
