@@ -140,13 +140,13 @@ function TableCustom<T>({
   };
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
+    <Table >
+      <TableHeader  >
+        <TableRow className="!border-0">
           {headerTable.map((item) => (
-            <TableHead
+            <TableHead 
               key={item.id}
-              className={clsx(item.class ? item.class : "text-[#343A40]")}
+              className={clsx(item.class ? item.class : "text-[#343A40]","p-[20px]")}
             >
               <div
                 className={clsx(
@@ -162,12 +162,12 @@ function TableCustom<T>({
         </TableRow>
       </TableHeader>
 
-      <TableBody>
+      <TableBody className="">
         {data
           ? data.map((item, idx) => (
-              <TableRow key={idx}>
+              <TableRow className="border-[#EFEFEF]" key={idx}>
                 {headerTable.map((col) => (
-                  <TableCell key={col.id}>
+                  <TableCell className="!p-[20px]" key={col.id}>
                     {slots && slots[col.id]
                       ? slots[col.id](item)
                       : (item as any)[col.id]}
