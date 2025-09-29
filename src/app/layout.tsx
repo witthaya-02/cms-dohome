@@ -1,31 +1,31 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { Prompt } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
 
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import LayoutClient from "@/components/layout/layoutClient";
+import { SidebarProvider } from '@/components/ui/sidebar';
+import LayoutClient from '@/components/layout/layoutClient';
+import { Prompt } from "next/font/google";
 
 const prompt = Prompt({
-  weight: ["300", "400", "500", "600", "700"],
-  subsets: ["thai", "latin"],
-  variable: "--font-prompt",
+  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['thai', 'latin'],
+  variable: '--font-prompt',
 });
 
 // Keep Geist fonts as well
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "cms dohome",
-  description: "cms dohome",
+  title: 'cms dohome',
+  description: 'cms dohome',
 };
 
 export default function RootLayout({
@@ -36,8 +36,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-       className={`${prompt.variable} ${geistSans.variable} ${geistMono.variable} font-prompt antialiased min-h-screen flex flex-col h-screen`}
-      // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${prompt.variable} ${geistSans.variable} ${geistMono.variable} font-prompt antialiased min-h-screen flex flex-col h-screen`}
+        // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SidebarProvider>
           {/* <AppSidebar breadcrumb={updateBreadcrumb}/>

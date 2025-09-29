@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const CustomPage = () => {
-  return (
-    <div>CustomPage</div>
-  )
-}
+  return <div>CustomPage</div>;
+};
 
-export default CustomPage
+export default CustomPage;

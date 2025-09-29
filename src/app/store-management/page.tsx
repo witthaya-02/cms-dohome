@@ -1,79 +1,77 @@
-"use client";
-import BtnAction from "@/components/ui/button";
-import React, { useState } from "react";
+'use client';
+import BtnAction from '@/components/ui/button';
+import React, { useState } from 'react';
 
-import { Popup } from "@/components/ui/dialog";
-import { DatePickerCustom } from "@/components/ui/custom/DatePickerCustom";
-import TableCustom from "@/components/ui/custom/TableCustom";
+import { Popup } from '@/components/ui/dialog';
+import { DatePickerCustom } from '@/components/ui/custom/DatePickerCustom';
+import TableCustom from '@/components/ui/custom/TableCustom';
 
 const StoreManagement = () => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
 
-  const title = (title: string) => (
-    <div className="text-[28px] font-[700]">{title}</div>
-  );
+  const title = (title: string) => <div className="text-[28px] font-[700]">{title}</div>;
 
   const headerTableInit = [
-    { display: "ชื่อหน้า", id: "name", sort: "", class: "min-w-[150px]" },
-    { display: "วันเริ่ม", id: "startDate", sort: "default" },
-    { display: "วันสิ้นสุด", id: "endDate", sort: "default" },
-    { display: "แก้ไขล่าสุด", id: "editDate", sort: "default" },
+    { display: 'ชื่อหน้า', id: 'name', sort: '', class: 'min-w-[150px]' },
+    { display: 'วันเริ่ม', id: 'startDate', sort: 'default' },
+    { display: 'วันสิ้นสุด', id: 'endDate', sort: 'default' },
+    { display: 'แก้ไขล่าสุด', id: 'editDate', sort: 'default' },
     {
-      display: "สถานะเผยแพร่",
-      id: "status",
-      sort: "default",
-      class: "justify-center",
+      display: 'สถานะเผยแพร่',
+      id: 'status',
+      sort: 'default',
+      class: 'justify-center',
     },
-    { display: "Action", id: "action", sort: "", class:"justify-center"},
+    { display: 'Action', id: 'action', sort: '', class: 'justify-center' },
   ];
   const invoices = [
     {
-      name: "test-1",
-      startDate: "15/04/25 00:00:00",
-      endDate: "17/04/25 23:59:59",
-      editDate: "01/03/25 14:23:44",
-      editBy: "Admin3",
-      status: "status",
+      name: 'test-1',
+      startDate: '15/04/25 00:00:00',
+      endDate: '17/04/25 23:59:59',
+      editDate: '01/03/25 14:23:44',
+      editBy: 'Admin3',
+      status: 'status',
     },
     {
-      name: "test-2",
-      startDate: "15/04/25 00:00:00",
-      endDate: "17/04/25 23:59:59",
-      editDate: "01/03/25 14:23:44",
-      editBy: "Admin3",
-      status: "status",
+      name: 'test-2',
+      startDate: '15/04/25 00:00:00',
+      endDate: '17/04/25 23:59:59',
+      editDate: '01/03/25 14:23:44',
+      editBy: 'Admin3',
+      status: 'status',
     },
     {
-      name: "test-3",
-      startDate: "15/04/25 00:00:00",
-      endDate: "17/04/25 23:59:59",
-      editDate: "01/03/25 14:23:44",
-      editBy: "Admin3",
-      status: "status",
+      name: 'test-3',
+      startDate: '15/04/25 00:00:00',
+      endDate: '17/04/25 23:59:59',
+      editDate: '01/03/25 14:23:44',
+      editBy: 'Admin3',
+      status: 'status',
     },
     {
-      name: "test-4",
-      startDate: "15/04/25 00:00:00",
-      endDate: "17/04/25 23:59:59",
-      editDate: "01/03/25 14:23:44",
-      editBy: "Admin3",
-      status: "status",
+      name: 'test-4',
+      startDate: '15/04/25 00:00:00',
+      endDate: '17/04/25 23:59:59',
+      editDate: '01/03/25 14:23:44',
+      editBy: 'Admin3',
+      status: 'status',
     },
     {
-      name: "test-5",
-      startDate: "15/04/25 00:00:00",
-      endDate: "17/04/25 23:59:59",
-      editDate: "01/03/25 14:23:44",
-      editBy: "Admin3",
-      status: "status",
+      name: 'test-5',
+      startDate: '15/04/25 00:00:00',
+      endDate: '17/04/25 23:59:59',
+      editDate: '01/03/25 14:23:44',
+      editBy: 'Admin3',
+      status: 'status',
     },
     {
-      name: "test-6",
-      startDate: "15/04/25 00:00:00",
-      endDate: "17/04/25 23:59:59",
-      editDate: "01/03/25 14:23:44",
-      editBy: "Admin3",
-      status: "status",
+      name: 'test-6',
+      startDate: '15/04/25 00:00:00',
+      endDate: '17/04/25 23:59:59',
+      editDate: '01/03/25 14:23:44',
+      editBy: 'Admin3',
+      status: 'status',
     },
   ];
 
@@ -84,7 +82,7 @@ const StoreManagement = () => {
       <Popup
         isOpen={isOpenPopup}
         title={{
-          display: "Tracking Package",
+          display: 'Tracking Package',
           center: true,
         }}
         closePopup={() => setIsOpenPopup(false)}
@@ -92,9 +90,9 @@ const StoreManagement = () => {
       >
         <div className="pt-4 pb-6 mx-6">
           <DatePickerCustom
-            name={"test"}
-            id={"test"}
-            label={"วว/ดด/ปปปป"}
+            name={'test'}
+            id={'test'}
+            label={'วว/ดด/ปปปป'}
             uiError={undefined}
             selected={time}
             emitUpdate={(date, time, language) => {
@@ -112,26 +110,28 @@ const StoreManagement = () => {
       </Popup>
 
       <div className="p-[30px] grid gap-[30px] bg-[#EAEFF3]">
-        {title("Default Homepage")}
+        {title('Default Homepage')}
 
         <TableCustom
           headerTableInit={headerTableInit}
           currentSort={(id, value) => {
-            console.log("current-sort:", id, value);
+            console.log('current-sort:', id, value);
           }}
           data={invoices}
           slots={{
             name: (item) => <div>{item.name}</div>,
             editDate: (item) => (
               <div>
-                {item.editDate} {"โดย"} {item.editDate}
+                {item.editDate} {'โดย'} {item.editDate}
               </div>
             ),
             startDate: (item) => <div>{item.startDate}</div>,
             endDate: (item) => <div>{item.editDate}</div>,
             status: (item) => <div className="text-center">{item.status}</div>,
             action: (item) => (
-              <div className="flex gap-[10px] items-center justify-center">
+              <div onClick={()=> {
+                console.log(item)
+              }} className="flex gap-[10px] items-center justify-center">
                 <div className="cursor-pointer">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -216,7 +216,7 @@ const StoreManagement = () => {
         ></TableCustom>
 
         <div className="flex justify-between">
-          {title("Custom Homepage")}
+          {title('Custom Homepage')}
           <div className="">
             <BtnAction
               onClick={() => setIsOpenPopup(true)}

@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/lib/utils/extract-object.ts
-export function extractValue(
-  obj: Record<string, unknown>
-): Record<string, any> {
+export function extractValue(obj: Record<string, unknown>): Record<string, any> {
   const result: Record<string, unknown> = {};
 
   Object.entries(obj).forEach(([key, value]) => {

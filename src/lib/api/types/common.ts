@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { StringOptional } from "./common-types";
+import { StringOptional } from './common-types';
 
 // src/lib/api/types/common.ts
 export class ApiResponse<T> {
@@ -24,16 +22,13 @@ export class ApiResponse<T> {
     this.errorMessage = errorMessage;
   }
 
-  static fromJson<T>(
-    data: any,
-    transformData: (data: any) => T
-  ): ApiResponse<T> {
+  static fromJson<T>(data: any, transformData: (data: any) => T): ApiResponse<T> {
     return new ApiResponse<T>(
       data.status_code || 0,
       data.is_success || false,
       transformData(data.data),
-      data.message || "",
-      data.error_message || ""
+      data.message || '',
+      data.error_message || ''
     );
   }
 }
@@ -74,11 +69,11 @@ export class BannerTopItem {
   };
 
   constructor(data: BannerTopApi) {
-    this.imageWeb = data?.banner.image_web ?? "";
-    this.imageApp = data?.banner.image_app ?? "";
+    this.imageWeb = data?.banner.image_web ?? '';
+    this.imageApp = data?.banner.image_app ?? '';
     this.linkSetting = {
-      linkType: data?.banner.link_setting.link_type ?? "",
-      linkTo: data?.banner.link_setting.link_to ?? "",
+      linkType: data?.banner.link_setting.link_type ?? '',
+      linkTo: data?.banner.link_setting.link_to ?? '',
     };
   }
 

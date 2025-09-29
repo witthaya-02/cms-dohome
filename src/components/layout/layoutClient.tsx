@@ -1,18 +1,12 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/add-slide";
-import Link from "next/link";
+import { useState } from 'react';
+import { SidebarTrigger } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/add-slide';
+import Link from 'next/link';
 
-export default function LayoutClient({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [breadcrumb, setBreadcrumb] = useState<
-    { title: string; url: string }[]
-  >([]);
+export default function LayoutClient({ children }: { children: React.ReactNode }) {
+  const [breadcrumb, setBreadcrumb] = useState<{ title: string; url: string }[]>([]);
 
   return (
     <>
@@ -26,7 +20,9 @@ export default function LayoutClient({
                 <div key={index}>
                   {index !== breadcrumb.length - 1 ? (
                     <div className="flex gap-[20px] items-center">
-                      <Link href={item.url} className="text-[#F26529] font-[600]">{item.title}</Link>
+                      <Link href={item.url} className="text-[#F26529] font-[600]">
+                        {item.title}
+                      </Link>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="7"

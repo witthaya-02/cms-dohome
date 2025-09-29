@@ -23,7 +23,7 @@ export class ApiError extends Error {
     originalError?: Error;
   }) {
     super(message);
-    this.name = "ApiError";
+    this.name = 'ApiError';
     this.statusCode = statusCode;
     this.isSuccess = isSuccess;
     this.originalError = originalError;
@@ -63,16 +63,13 @@ export async function handleApiError(response: Response): Promise<ApiError> {
   try {
     const data = await response.json();
     return new ApiError({
-      message:
-        data.message ||
-        response.statusText ||
-        "มีข้อผิดพลาดในการเชื่อมต่อกับระบบ",
+      message: data.message || response.statusText || 'มีข้อผิดพลาดในการเชื่อมต่อกับระบบ',
       statusCode: data.status_code || response.status,
       isSuccess: data.is_success || false,
     });
   } catch (error) {
     return new ApiError({
-      message: response.statusText || "มีข้อผิดพลาดในการเชื่อมต่อกับระบบ",
+      message: response.statusText || 'มีข้อผิดพลาดในการเชื่อมต่อกับระบบ',
       statusCode: response.status,
       originalError: error instanceof Error ? error : undefined,
     });

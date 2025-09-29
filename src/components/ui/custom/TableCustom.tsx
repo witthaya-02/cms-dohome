@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useState } from 'react';
 import {
   Table,
   TableBody,
@@ -6,10 +6,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import clsx from "clsx";
+} from '@/components/ui/table';
+import clsx from 'clsx';
 
-export type HeaderCol<T = any> = {
+export type HeaderCol = {
   id: string;
   sort: string;
   class?: string;
@@ -17,7 +17,7 @@ export type HeaderCol<T = any> = {
 };
 
 type TableCustomProps<T> = {
-  headerTableInit: HeaderCol<T>[];
+  headerTableInit: HeaderCol[];
   currentSort: (id: string, value: string) => void;
   children?: ReactNode; // Footer slot
   data?: T[]; // Data array
@@ -36,24 +36,23 @@ function TableCustom<T>({
   const toggleSort = (id: string, value?: string) => {
     setHeaderTable((prev) => {
       const updated = prev.map((col) => {
-        if (col.id !== id)
-          return { ...col, sort: col.sort === "" ? "" : "default" };
+        if (col.id !== id) return { ...col, sort: col.sort === '' ? '' : 'default' };
         if (value) return { ...col, sort: value };
-        if (col.sort === "default") return { ...col, sort: "asc" };
-        if (col.sort === "asc") return { ...col, sort: "desc" };
-        return { ...col, sort: "default" };
+        if (col.sort === 'default') return { ...col, sort: 'asc' };
+        if (col.sort === 'asc') return { ...col, sort: 'desc' };
+        return { ...col, sort: 'default' };
       });
 
       const current = updated.find((col) => col.id === id);
-      currentSort(id, current?.sort ?? "");
+      currentSort(id, current?.sort ?? '');
 
       return updated;
     });
   };
 
   const handleSort = (value: string, id: string) => {
-    if (!value || value === "") return null;
-    if (value === "default") {
+    if (!value || value === '') return null;
+    if (value === 'default') {
       return (
         <div
           className="flex flex-col gap-[5px] cursor-pointer hover:opacity-60"
@@ -90,12 +89,9 @@ function TableCustom<T>({
         </div>
       );
     }
-    if (value === "asc") {
+    if (value === 'asc') {
       return (
-        <div
-          className="hover:opacity-60 cursor-pointer"
-          onClick={() => toggleSort(id)}
-        >
+        <div className="hover:opacity-60 cursor-pointer" onClick={() => toggleSort(id)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="12"
@@ -113,12 +109,9 @@ function TableCustom<T>({
         </div>
       );
     }
-    if (value === "desc") {
+    if (value === 'desc') {
       return (
-        <div
-          className="hover:opacity-60 cursor-pointer"
-          onClick={() => toggleSort(id)}
-        >
+        <div className="hover:opacity-60 cursor-pointer" onClick={() => toggleSort(id)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="12"
@@ -140,19 +133,16 @@ function TableCustom<T>({
   };
 
   return (
-    <Table >
-      <TableHeader  >
+    <Table>
+      <TableHeader>
         <TableRow className="!border-0">
           {headerTable.map((item) => (
-            <TableHead 
+            <TableHead
               key={item.id}
-              className={clsx(item.class ? item.class : "text-[#343A40]","p-[20px]")}
+              className={clsx(item.class ? item.class : 'text-[#343A40]', 'p-[20px]')}
             >
               <div
-                className={clsx(
-                  item.class,
-                  "flex gap-[10px] items-center text-[14px] font-[600]"
-                )}
+                className={clsx(item.class, 'flex gap-[10px] items-center text-[14px] font-[600]')}
               >
                 {item.display}
                 {handleSort(item.sort, item.id)}
@@ -168,9 +158,7 @@ function TableCustom<T>({
               <TableRow className="border-[#EFEFEF]" key={idx}>
                 {headerTable.map((col) => (
                   <TableCell className="!p-[20px]" key={col.id}>
-                    {slots && slots[col.id]
-                      ? slots[col.id](item)
-                      : (item as any)[col.id]}
+                    {slots && slots[col.id] ? slots[col.id](item) : (item as any)[col.id]}
                   </TableCell>
                 ))}
               </TableRow>

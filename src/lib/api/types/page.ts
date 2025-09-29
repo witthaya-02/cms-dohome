@@ -1,26 +1,25 @@
-
-import { StringOptional } from "./common-types";
+import { StringOptional } from './common-types';
 
 export enum ModuleName {
-  Hero = "HEROBANNER",
-  HeroField = "hero_banner",
-  HeroFieldCamelCase = "heroBanner",
+  Hero = 'HEROBANNER',
+  HeroField = 'hero_banner',
+  HeroFieldCamelCase = 'heroBanner',
 
-  ProductCarousel = "PRODUCTCAROUSEL",
-  ProductCarouselField = "product_carousel",
-  ProductCarouselFieldCamelCase = "productCarousel",
+  ProductCarousel = 'PRODUCTCAROUSEL',
+  ProductCarouselField = 'product_carousel',
+  ProductCarouselFieldCamelCase = 'productCarousel',
 
-  ProductGrid = "PRODUCTGRID",
-  ProductGridField = "product_grid",
-  ProductGridFieldCamelCase = "productGrid",
+  ProductGrid = 'PRODUCTGRID',
+  ProductGridField = 'product_grid',
+  ProductGridFieldCamelCase = 'productGrid',
 
-  SingleBanner = "SINGLEBANNER",
-  SingleBannerField = "single_banner",
-  SingleBannerFieldCamelCase = "singleBanner",
+  SingleBanner = 'SINGLEBANNER',
+  SingleBannerField = 'single_banner',
+  SingleBannerFieldCamelCase = 'singleBanner',
 
-  RawHtml = "RAWHTML",
-  RawHtmlField = "raw_html",
-  RawHtmlFieldCamelCase = "rawHtml",
+  RawHtml = 'RAWHTML',
+  RawHtmlField = 'raw_html',
+  RawHtmlFieldCamelCase = 'rawHtml',
 }
 
 export interface BaseWidgetClass {
@@ -83,13 +82,7 @@ class GenericWidget<T extends string, U> implements BaseWidgetClass {
   private contentKey: T;
   private contentValue: U;
 
-  constructor(
-    moduleName: string,
-    isUse: boolean,
-    seq: number,
-    key: T,
-    value: U
-  ) {
+  constructor(moduleName: string, isUse: boolean, seq: number, key: T, value: U) {
     this.moduleName = moduleName;
     this.isUse = isUse;
     this.seq = seq;
@@ -102,13 +95,7 @@ class GenericWidget<T extends string, U> implements BaseWidgetClass {
     key: T,
     parseFn: (value: V) => U
   ): GenericWidget<T, U> {
-    return new GenericWidget(
-      data.module_name,
-      data.is_use,
-      data.seq,
-      key,
-      parseFn(data[key])
-    );
+    return new GenericWidget(data.module_name, data.is_use, data.seq, key, parseFn(data[key]));
   }
 
   get content(): U {
@@ -190,19 +177,17 @@ export class ProductContentClass {
     title: string;
     showOnWeb: boolean;
     showOnApp: boolean;
-    linkSetting: LinkSettingClass
+    linkSetting: LinkSettingClass;
   }) {
     this.isShowTitle = parameter.isShowTitle;
     this.productCollectionId = parameter.productCollectionId;
     this.title = parameter.title;
     this.showOnApp = parameter.showOnApp;
     this.showOnWeb = parameter.showOnWeb;
-    this.LinkSetting = parameter.linkSetting
+    this.LinkSetting = parameter.linkSetting;
   }
 
-  static fromJson(
-    data: ProductContentWidget
-  ): ProductContentClass {
+  static fromJson(data: ProductContentWidget): ProductContentClass {
     return new ProductContentClass({
       isShowTitle: data.is_show_title,
       productCollectionId: data.product_collection_id,
@@ -219,11 +204,7 @@ class BannerHeroSettingClass {
   imageApp: string;
   linkSetting: LinkSettingClass;
 
-  constructor(parameter: {
-    imageApp: string;
-    imageWeb: string;
-    linkSetting: LinkSettingClass;
-  }) {
+  constructor(parameter: { imageApp: string; imageWeb: string; linkSetting: LinkSettingClass }) {
     this.imageApp = parameter.imageApp;
     this.imageWeb = parameter.imageWeb;
     this.linkSetting = parameter.linkSetting;
@@ -246,8 +227,8 @@ export class LinkSettingClass {
   linkType: string;
 
   constructor(parameter: { linkTo: StringOptional; linkType: StringOptional }) {
-    this.linkTo = parameter.linkTo ?? "";
-    this.linkType = parameter.linkType ?? "";
+    this.linkTo = parameter.linkTo ?? '';
+    this.linkType = parameter.linkType ?? '';
   }
 
   static fromJson(data: LinkSetting): LinkSettingClass {
@@ -291,11 +272,7 @@ export class RawHtmlContentClass {
   showOnWeb: boolean;
   showOnApp: boolean;
 
-  constructor(parameter: {
-    html: string;
-    showOnWeb: boolean;
-    showOnApp: boolean;
-  }) {
+  constructor(parameter: { html: string; showOnWeb: boolean; showOnApp: boolean }) {
     this.html = parameter.html;
     this.showOnApp = parameter.showOnApp;
     this.showOnWeb = parameter.showOnWeb;
@@ -318,7 +295,7 @@ export class HomePageResponse {
   }
 
   static fromJson(data: ApiPageResponse): HomePageResponse {
-    return new HomePageResponse(Page.fromJson(data.pages.widgets,data.pages.url_slug ?? ""));
+    return new HomePageResponse(Page.fromJson(data.pages.widgets, data.pages.url_slug ?? ''));
   }
 }
 
@@ -326,12 +303,12 @@ class Page {
   widgets: BaseWidgetClass[];
   urlSlug: string;
 
-  constructor(widgets: BaseWidgetClass[],urlSlug:string) {
+  constructor(widgets: BaseWidgetClass[], urlSlug: string) {
     this.widgets = widgets;
     this.urlSlug = urlSlug;
   }
 
-  static fromJson(data: Widget[],urlSlug:string): Page {
+  static fromJson(data: Widget[], urlSlug: string): Page {
     const list: BaseWidgetClass[] = [];
     data.forEach((item) => {
       switch (item.module_name) {
@@ -415,7 +392,7 @@ class Page {
           break;
       }
     });
-    return new Page(list,urlSlug);
+    return new Page(list, urlSlug);
   }
 }
 

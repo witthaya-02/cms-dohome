@@ -1,25 +1,17 @@
-"use client";
+'use client';
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from 'react';
 // import { ChevronDownIcon } from "lucide-react";
 // import { CalendarIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 // import { Label } from "@/components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Input } from "../input";
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Input } from '../input';
 
 type Props = {
-  emitUpdate: (
-    date: string | undefined,
-    time: string | undefined,
-    language: string
-  ) => void;
+  emitUpdate: (date: string | undefined, time: string | undefined, language: string) => void;
   id: string;
   name: string;
   label: string;
@@ -38,13 +30,13 @@ const DatePickerCustom: React.FC<Props> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [dateValue, setDateValue] = useState<Date | undefined>(undefined);
-  const [time, setTime] = useState<string>("00:00:00");
+  const [time, setTime] = useState<string>('00:00:00');
 
   const [date, setDate] = React.useState<Date | undefined>(undefined);
   const [month, setMonth] = React.useState<Date | undefined>(dateValue);
   useEffect(() => {
     if (selected) {
-      const [date, time] = selected.split(" ");
+      const [date, time] = selected.split(' ');
       if (date) {
         setDateValue(new Date(date));
       }
@@ -67,7 +59,7 @@ const DatePickerCustom: React.FC<Props> = ({
     return date.toISOString(); // ส่งออกในรูปแบบ 2025-06-05T17:00:00.000Z
   };
   // en-US | th-TH | en-GB
-  const language = "en-GB";
+  const language = 'en-GB';
   return (
     <div className="flex flex-col gap-3">
       <Popover open={open} onOpenChange={setOpen}>
@@ -78,17 +70,11 @@ const DatePickerCustom: React.FC<Props> = ({
             name={name}
             className={`
               w-full h-full justify-between font-normal text-[14px] 
-              ${disable ? "bg-[#EFEFEF]" : ""} 
-              ${
-                uiError
-                  ? "border border-[#D62828]"
-                  : open
-                  ? "border border-orange"
-                  : ""
-              }
+              ${disable ? 'bg-[#EFEFEF]' : ''} 
+              ${uiError ? 'border border-[#D62828]' : open ? 'border border-orange' : ''}
             `}
           >
-            <div className={`${disable && "text-[#B9B9B9]"}`}>{labelDate}</div>
+            <div className={`${disable && 'text-[#B9B9B9]'}`}>{labelDate}</div>
 
             {/* <CalendarIcon className="size-3.5" /> */}
             <div>
@@ -145,9 +131,7 @@ const DatePickerCustom: React.FC<Props> = ({
                   setDateValue(date);
                   // setOpen(false);
                 }}
-                disabled={(date: Date) =>
-                  date > new Date() || date < new Date("1900-01-01")
-                }
+                disabled={(date: Date) => date > new Date() || date < new Date('1900-01-01')}
               />
               {date && (
                 <div className="flex flex-col gap-3 p-[10px]">
