@@ -3,7 +3,7 @@ import BtnAction from '@/components/ui/button';
 import React, { useState } from 'react';
 
 import { Popup } from '@/components/ui/dialog';
-import { DatePickerCustom } from '@/components/ui/custom/DatePickerCustom';
+import { DatePickerCustom, DateRangePickerCustom } from '@/components/ui/custom/DatePickerCustom';
 import TableCustom from '@/components/ui/custom/TableCustom';
 
 const StoreManagement = () => {
@@ -12,7 +12,7 @@ const StoreManagement = () => {
   const title = (title: string) => <div className="text-[28px] font-[700]">{title}</div>;
 
   const headerTableInit = [
-    { display: 'ชื่อหน้า', id: 'name', sort: '', class: 'min-w-[150px]' },
+    { display: 'ชื่อหน้า', id: 'name', sort: '', class: 'w-[110px]' },
     { display: 'วันเริ่ม', id: 'startDate', sort: 'default' },
     { display: 'วันสิ้นสุด', id: 'endDate', sort: 'default' },
     { display: 'แก้ไขล่าสุด', id: 'editDate', sort: 'default' },
@@ -75,7 +75,31 @@ const StoreManagement = () => {
     },
   ];
 
+  const handleDateRangeUpdate = (
+    startDate: string,
+    startTime: string,
+    endDate: string | undefined,
+    endTime: string | undefined,
+    language: string
+  ) => {
+    if (startDate) return;
+    const stringDate = new Date(startDate).toLocaleDateString(language);
+    setTime(`${stringDate} ${time}`);
+    console.log('Start Date:', startDate); // ISO format: 2025-01-15T00:00:00.000Z
+    console.log('Start Time:', startTime); // 09:00:00
+    console.log('End Date:', endDate); // ISO format: 2025-01-20T00:00:00.000Z
+    console.log('End Time:', endTime); // 18:00:00
+    console.log('Language:', language); // en-GB
+
+    // ทำอะไรก็ได้กับข้อมูล เช่น บันทึกลง state หรือส่ง API
+  };
+
   const [time, setTime] = useState<string | undefined>();
+
+  const [filterDate, setFilterDate] = useState({
+    startDate: '',
+    endDate: '',
+  });
 
   return (
     <>
@@ -111,6 +135,149 @@ const StoreManagement = () => {
 
       <div className="p-[30px] grid gap-[30px] bg-[#EAEFF3]">
         {title('Default Homepage')}
+
+        <TableCustom
+          headerTableInit={headerTableInit}
+          currentSort={(id, value) => {
+            console.log('current-sort:', id, value);
+          }}
+          data={[invoices[0]]}
+          slots={{
+            name: (item) => <div>{item.name}</div>,
+            editDate: (item) => (
+              <div>
+                {item.editDate} {'โดย'} {item.editDate}
+              </div>
+            ),
+            startDate: (item) => <div>{item.startDate}</div>,
+            endDate: (item) => <div>{item.editDate}</div>,
+            status: (item) => <div className="text-center">{item.status}</div>,
+            action: (item) => (
+              <div
+                onClick={() => {
+                  console.log(item);
+                }}
+                className="flex gap-[10px] items-center justify-center"
+              >
+                <div className="cursor-pointer">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                  >
+                    <path
+                      d="M1 12L0.5 16.5L5 16L15.5858 5.41421C16.3668 4.63316 16.3668 3.36684 15.5858 2.58579L14.4142 1.41421C13.6332 0.633165 12.3668 0.633165 11.5858 1.41421L1 12Z"
+                      stroke="#343A40"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M10 3L14 7"
+                      stroke="#343A40"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M9 17H17"
+                      stroke="#343A40"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                <div className="cursor-pointer">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                  >
+                    <path
+                      d="M17 13V2C17 1.44771 16.5523 1 16 1H5"
+                      stroke="#343A40"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M2 17L14 17C14.5523 17 15 16.5523 15 16L15 4C15 3.44772 14.5523 3 14 3L2 3C1.44772 3 1 3.44772 1 4L1 16C1 16.5523 1.44772 17 2 17Z"
+                      stroke="#343A40"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M8 7V13"
+                      stroke="#343A40"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M5 10H11"
+                      stroke="#343A40"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+              </div>
+            ),
+          }}
+        ></TableCustom>
+
+        <div className="flex justify-between">
+          {title('Custom Homepage')}
+          <div className="">
+            <BtnAction
+              onClick={() => setIsOpenPopup(true)}
+              isActive={true}
+              wording="เพิ่มหน้าหลัก"
+              type="button"
+              size={{ h: 43, w: 145 }}
+              icon={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                >
+                  <path
+                    d="M8 0.787598V14.7876"
+                    stroke="white"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M1 7.7876L15 7.7876"
+                    stroke="white"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              }
+            />
+          </div>
+        </div>
+
+        <div>
+          
+          <DateRangePickerCustom
+            id="date-range"
+            name="dateRange"
+            selectedStart={filterDate.startDate}
+            selectedEnd={filterDate.endDate}
+            emitUpdate={(startDate, startTime, endDate, endTime, language) => {
+              if(startDate && endDate){
+                setFilterDate({
+                  startDate:`${startDate} ${startTime}`,
+                  endDate:`${endDate} ${endTime}`
+                })
+              }
+            }}
+          />
+        </div>
 
         <TableCustom
           headerTableInit={headerTableInit}
@@ -217,41 +384,6 @@ const StoreManagement = () => {
             ),
           }}
         ></TableCustom>
-
-        <div className="flex justify-between">
-          {title('Custom Homepage')}
-          <div className="">
-            <BtnAction
-              onClick={() => setIsOpenPopup(true)}
-              isActive={true}
-              wording="เพิ่มหน้าหลัก"
-              type="button"
-              size={{ h: 43, w: 145 }}
-              icon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                >
-                  <path
-                    d="M8 0.787598V14.7876"
-                    stroke="white"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M1 7.7876L15 7.7876"
-                    stroke="white"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              }
-            />
-          </div>
-        </div>
       </div>
     </>
   );

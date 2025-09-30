@@ -11,7 +11,7 @@ import clsx from 'clsx';
 
 export type HeaderCol = {
   id: string;
-  sort: string;
+  sort: "" | "default" | "desc" | "asc" | string;
   class?: string;
   display: string;
 };
@@ -21,7 +21,9 @@ type TableCustomProps<T> = {
   currentSort: (id: string, value: string) => void;
   children?: ReactNode; // Footer slot
   data?: T[]; // Data array
-  slots?: { [columnId: string]: (item: T) => ReactNode }; // Column slot
+  // slots?: { [columnId: string]: (item: T) => ReactNode }; // Column slot
+  slots?: Partial<Record<keyof T | string, (item: T) => ReactNode>>; 
+  // slots?: Partial<Record<HeaderCol["id"], (item: T) => ReactNode>>;
 };
 
 function TableCustom<T>({
@@ -31,9 +33,9 @@ function TableCustom<T>({
   slots,
   children,
 }: TableCustomProps<T>) {
-  const [headerTable, setHeaderTable] = useState(headerTableInit);
+  const [headerTable, setHeaderTable] = useState<HeaderCol[]>(headerTableInit);
 
-  const toggleSort = (id: string, value?: string) => {
+  const toggleSort = (id: string, value?:string) => {
     setHeaderTable((prev) => {
       const updated = prev.map((col) => {
         if (col.id !== id) return { ...col, sort: col.sort === '' ? '' : 'default' };
@@ -158,7 +160,10 @@ function TableCustom<T>({
               <TableRow className="border-[#EFEFEF]" key={idx}>
                 {headerTable.map((col) => (
                   <TableCell className="!p-[20px]" key={col.id}>
-                    {slots && slots[col.id] ? slots[col.id](item) : (item as any)[col.id]}
+                    {slots?.[col.id]
+                ? slots[col.id]?.(item) // custom render
+                : (item as Record<string, ReactNode>)[col.id]} {/* fallback raw */}
+                    {/* {slots && slots[col.id] ? slots[col.id](item) : (item as any)[col.id]} */}
                   </TableCell>
                 ))}
               </TableRow>
