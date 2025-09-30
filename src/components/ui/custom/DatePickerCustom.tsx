@@ -244,11 +244,11 @@ const DateRangePickerCustom: React.FC<DateRangePickerProps> = ({
       if (dateRange.to) {
         const fromStr = formatDisplayDate(dateRange.from, startTime);
         const toStr = formatDisplayDate(dateRange.to, endTime);
-        return {from:fromStr, to:toStr};
+        return { from: fromStr, to: toStr };
       }
-      return {from:formatDisplayDate(dateRange.from, startTime), to:""};
+      return { from: formatDisplayDate(dateRange.from, startTime), to: '' };
     }
-    return {from:"", to:""};
+    return { from: '', to: '' };
   }, [dateRange, startTime, endTime]);
 
   const formatDate = (date: Date | undefined): string | undefined => {
@@ -286,7 +286,9 @@ const DateRangePickerCustom: React.FC<DateRangePickerProps> = ({
               ${uiError ? 'border border-[#D62828]' : open ? 'border border-orange' : ''}
             `}
             >
-              <div className={`${disable && 'text-[#B9B9B9]'}`}>{labelDate.from && labelDate.from !== "" ? labelDate.from : 'เลือกวันเริ่ม'}</div>
+              <div className={`${disable && 'text-[#B9B9B9]'}`}>
+                {labelDate.from && labelDate.from !== '' ? labelDate.from : 'เลือกวันเริ่ม'}
+              </div>
               <div>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -333,7 +335,9 @@ const DateRangePickerCustom: React.FC<DateRangePickerProps> = ({
               ${uiError ? 'border border-[#D62828]' : open ? 'border border-orange' : ''}
             `}
             >
-              <div className={`${disable && 'text-[#B9B9B9]'}`}>{labelDate.to && labelDate.to !== "" ? labelDate.to : 'เลือกวันสิ้นสุด'}</div>
+              <div className={`${disable && 'text-[#B9B9B9]'}`}>
+                {labelDate.to && labelDate.to !== '' ? labelDate.to : 'เลือกวันสิ้นสุด'}
+              </div>
               <div>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -371,7 +375,10 @@ const DateRangePickerCustom: React.FC<DateRangePickerProps> = ({
             </Button>
           </div>
         </PopoverTrigger>
-        <PopoverContent className="w-[525px] overflow-hidden p-0 flex justify-center " align="start">
+        <PopoverContent
+          className="w-[525px] overflow-hidden p-0 flex justify-center "
+          align="start"
+        >
           {!disable && (
             <div>
               <Calendar
@@ -385,7 +392,7 @@ const DateRangePickerCustom: React.FC<DateRangePickerProps> = ({
                 disabled={(date: Date) => date > new Date() || date < new Date('1900-01-01')}
                 numberOfMonths={2}
               />
-              
+
               {dateRange?.from && dateRange?.to && (
                 <div className="flex flex-col gap-3 p-[10px] border-t">
                   <div className="flex gap-2 items-center">

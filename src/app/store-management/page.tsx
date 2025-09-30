@@ -262,18 +262,17 @@ const StoreManagement = () => {
         </div>
 
         <div>
-          
           <DateRangePickerCustom
             id="date-range"
             name="dateRange"
             selectedStart={filterDate.startDate}
             selectedEnd={filterDate.endDate}
             emitUpdate={(startDate, startTime, endDate, endTime, language) => {
-              if(startDate && endDate){
+              if (startDate && endDate) {
                 setFilterDate({
-                  startDate:`${startDate} ${startTime}`,
-                  endDate:`${endDate} ${endTime}`
-                })
+                  startDate: `${startDate} ${startTime}`,
+                  endDate: `${endDate} ${endTime}`,
+                });
               }
             }}
           />

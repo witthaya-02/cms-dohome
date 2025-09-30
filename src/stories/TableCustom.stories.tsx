@@ -91,9 +91,9 @@ export const Playground: Story = {
     },
     data: data,
     slots: {
-        // อยากแก้ไข ตาราง ไหนให้ใส่ชื่อตรงกับ id ใน header ที่ส่งมา
-      name: (item:any) => <div className='text-red-400'>{item.name}</div>,
-      status: (item:any) => <div className="text-center">{item.status}</div>,
+      // อยากแก้ไข ตาราง ไหนให้ใส่ชื่อตรงกับ id ใน header ที่ส่งมา
+      name: (item: any) => <div className="text-red-400">{item.name}</div>,
+      status: (item: any) => <div className="text-center">{item.status}</div>,
       action: (item) => (
         <div
           onClick={() => {
