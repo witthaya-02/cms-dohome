@@ -16,15 +16,9 @@ interface IconItemProps {
   color?: string;
 }
 
-const IconItem: React.FC<IconItemProps> = ({
-  name,
-  alt,
-  size = 24,
-  className = '',
-  color,
-}) => {
+const IconItem: React.FC<IconItemProps> = ({ name, alt, size = 24, className = '', color }) => {
   const iconPath = `/${name}.svg`;
-  
+
   return (
     <CustomImage
       src={iconPath}

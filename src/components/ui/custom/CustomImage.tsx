@@ -99,7 +99,7 @@ const CustomImage: React.FC<CustomImageProps> = ({
       };
 
   // ปรับ style objectFit ให้ consistent
-  const style: React.CSSProperties = { 
+  const style: React.CSSProperties = {
     objectFit: objectFit,
     ...customStyle,
   };
