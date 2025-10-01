@@ -1,6 +1,6 @@
-import { toast } from "sonner";
-import React from "react";
-import { useRouter } from "next/navigation";
+import { toast } from 'sonner';
+import React from 'react';
+import { useRouter } from 'next/navigation';
 // import { useDeviceStore } from "@/store/deviceStore";
 
 type Props = {
@@ -11,12 +11,12 @@ type Props = {
   linkText?: string;
   linkUrl?: string;
   position?:
-    | "top-left"
-    | "top-center"
-    | "top-right"
-    | "bottom-left"
-    | "bottom-center"
-    | "bottom-right";
+    | 'top-left'
+    | 'top-center'
+    | 'top-right'
+    | 'bottom-left'
+    | 'bottom-center'
+    | 'bottom-right';
 };
 
 type NotSuccessProps = {
@@ -24,17 +24,9 @@ type NotSuccessProps = {
   text?: string;
 };
 
-export const alertIsSuccess = ({
-  title,
-  text,
-  image,
-  linkText,
-  linkUrl,
-  position,
-}: Props) => {
+export const alertIsSuccess = ({ title, text, image, linkText, linkUrl, position }: Props) => {
   const ToastContent = ({ t }: { t: string | number }) => {
     const router = useRouter();
-    
 
     const handleLinkClick = () => {
       if (linkUrl) {
@@ -107,7 +99,7 @@ export const alertIsSuccess = ({
 
   // const deviceInfo = useDeviceStore.getState().deviceInfo;
   toast.custom((t) => <ToastContent t={t} />, {
-    position: position ||  "top-right",
+    position: position || 'top-right',
     // position: position || (deviceInfo?.isMobile ? "top-center" : "top-right"),
   });
 };
@@ -154,9 +146,7 @@ export const alertIsNotSuccess = ({ title, text }: NotSuccessProps) => {
                 {title}
               </div>
               {text && (
-                <div className="text-[12px] md:text-[14px] text-[#343A40] font-[400]">
-                  {text}
-                </div>
+                <div className="text-[12px] md:text-[14px] text-[#343A40] font-[400]">{text}</div>
               )}
             </div>
           </div>
@@ -186,10 +176,8 @@ export const alertIsNotSuccess = ({ title, text }: NotSuccessProps) => {
       </div>
     ),
     {
-      id: indexNotSuccessAlert
-        ? `alertNotSuccess-${indexNotSuccessAlert}`
-        : "alertNotSuccess",
-      position: "top-center", // <== ตั้งค่าตำแหน่งตรงนี้
+      id: indexNotSuccessAlert ? `alertNotSuccess-${indexNotSuccessAlert}` : 'alertNotSuccess',
+      position: 'top-center', // <== ตั้งค่าตำแหน่งตรงนี้
       duration: 1500,
     }
   );

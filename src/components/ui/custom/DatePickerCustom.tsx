@@ -195,7 +195,7 @@ const DateRangePickerCustom: React.FC<DateRangePickerProps> = ({
   name,
   disable,
   uiError,
-  className
+  className,
 }) => {
   const [open, setOpen] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);

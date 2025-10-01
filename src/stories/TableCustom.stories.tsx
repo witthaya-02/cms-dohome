@@ -69,7 +69,7 @@ const data = [
 const meta = {
   title: 'components/ui/TableCustom',
   component: TableCustom,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
     docs: {
       description: {

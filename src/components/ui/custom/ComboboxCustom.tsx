@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 // import { ChevronsUpDownIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 import {
   Command,
@@ -11,21 +11,16 @@ import {
   // CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+} from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-import Image from "next/image";
-import cleanInputIcon from "~/public/icons/ic-clean-input.svg";
+import Image from 'next/image';
+import cleanInputIcon from '~/public/icons/ic-clean-input.svg';
 
 // import { useMaster } from "@/hooks/api/useMaster";
-import { StringOptional } from "@/lib/api/types/common-types";
+import { StringOptional } from '@/lib/api/types/common-types';
 // import { Input } from "../input";
 // import { AddressType } from "@/enums/enums";
-
 
 type ItemOption = { display: StringOptional; value: StringOptional };
 type PropsDropdownMenuCustom = {
@@ -37,12 +32,10 @@ type PropsDropdownMenuCustom = {
   // eslint-disable-next-line no-unused-vars
   emit: (value: ItemOption) => void;
   remove?: () => void;
-  label?:string;
-  class?:string;
+  label?: string;
+  class?: string;
 };
-const DropdownMenuCustom: React.FC<PropsDropdownMenuCustom> = ({
-  ...Props
-}) => {
+const DropdownMenuCustom: React.FC<PropsDropdownMenuCustom> = ({ ...Props }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleSelectEmit = (value: ItemOption) => {
@@ -73,24 +66,19 @@ const DropdownMenuCustom: React.FC<PropsDropdownMenuCustom> = ({
         <div
           ref={triggerRef}
           className={cn(
-            "relative w-full flex gap-[10px] border px-[12px] py-[10px] items-center rounded-[7px] text-[12px]",
-            Props.disable ? "bg-[#EFEFEF]" : "bg-white",
-            Props.uiError
-              ? "border-[#D62828]"
-              : open
-              ? " border-orange"
-              : "border-[#D6D6D7]",
-              Props.class
+            'relative w-full flex gap-[10px] border px-[12px] py-[10px] items-center rounded-[7px] text-[12px]',
+            Props.disable ? 'bg-[#EFEFEF]' : 'bg-white',
+            Props.uiError ? 'border-[#D62828]' : open ? ' border-orange' : 'border-[#D6D6D7]',
+            Props.class
           )}
         >
           {Props.currentValue ? (
             <div>
-              {(Props.items ?? []).find(
-                (value) => Props.currentValue === value.value
-              )?.display ?? Props.currentValue}
+              {(Props.items ?? []).find((value) => Props.currentValue === value.value)?.display ??
+                Props.currentValue}
             </div>
           ) : (
-            <div className="text-[#B9B9B9]"> {Props.label ? Props.label : "กรุณาเลือก"} </div>
+            <div className="text-[#B9B9B9]"> {Props.label ? Props.label : 'กรุณาเลือก'} </div>
           )}
           {!Props.disable && Props.currentValue && Props.remove ? (
             <Image
@@ -124,7 +112,7 @@ const DropdownMenuCustom: React.FC<PropsDropdownMenuCustom> = ({
         </div>
       </PopoverTrigger>
       <PopoverContent
-        className={`${!width && "w-full"} max-h-[300px] overflow-y-auto p-0`}
+        className={`${!width && 'w-full'} max-h-[300px] overflow-y-auto p-0`}
         style={width ? { width: `${width}px` } : undefined}
       >
         <Command>
@@ -140,7 +128,7 @@ const DropdownMenuCustom: React.FC<PropsDropdownMenuCustom> = ({
                     <CommandItem
                       className="text-[12px]"
                       key={item.value}
-                      value={item.value ?? ""}
+                      value={item.value ?? ''}
                       onSelect={(currentValue) => {
                         if (currentValue) {
                           const findOption = Props.items?.find(
@@ -155,7 +143,7 @@ const DropdownMenuCustom: React.FC<PropsDropdownMenuCustom> = ({
                     >
                       <div
                         className={`${
-                          item.value === Props.currentValue && "text-orange"
+                          item.value === Props.currentValue && 'text-orange'
                         } px-[5px] py-[5px]`}
                       >
                         {item.display}

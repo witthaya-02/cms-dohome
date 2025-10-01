@@ -183,13 +183,7 @@ const StoreManagement = () => {
 
   return (
     <>
-
-              <Switch
-            checked={true}
-            disabled={false}
-            onCheckedChange={() => {
-                
-            }}/>
+      <Switch checked={true} disabled={false} onCheckedChange={() => {}} />
 
       <Popup
         isOpen={isOpenPopup}
