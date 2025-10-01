@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Image, { StaticImageData } from "next/image";
-import React, { useEffect, useMemo, useState } from "react";
-import emptyImage from "~/public/empty-product.svg";
+import Image, { StaticImageData } from 'next/image';
+import React, { useEffect, useMemo, useState } from 'react';
+import emptyImage from '~/public/empty-product.svg';
 
 type StringSrc = string;
 
@@ -27,31 +27,32 @@ interface CustomImageProps {
   /** คำอธิบายรูป fallback */
   fallbackAlt?: string;
   /** ปรับแต่งการแสดงผลรูป (cover/contain ฯลฯ) */
-  objectFit?: "cover" | "contain" | "fill" | "none" | "scale-down";
+  objectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
   /** ตั้งค่า decoding สำหรับประสิทธิภาพ */
-  decoding?: "auto" | "async" | "sync";
+  decoding?: 'auto' | 'async' | 'sync';
   /** ตั้งค่า loading เมื่อไม่ใช้ priority */
-  loading?: "eager" | "lazy";
+  loading?: 'eager' | 'lazy';
+  style?: React.CSSProperties;
 }
 
-const isNonEmpty = (v?: string | null): v is string =>
-  typeof v === "string" && v.trim() !== "";
+const isNonEmpty = (v?: string | null): v is string => typeof v === 'string' && v.trim() !== '';
 
 const CustomImage: React.FC<CustomImageProps> = ({
   src,
-  alt = "image",
+  alt = 'image',
   baseImage,
-  className = "",
+  className = '',
   fill = true,
   width = 300,
   height = 300,
   priority = false,
   unoptimized = false,
   fallbackSrc = emptyImage,
-  fallbackAlt = "empty-image",
-  objectFit = "contain",
-  decoding = "async",
-  loading = "lazy",
+  fallbackAlt = 'empty-image',
+  objectFit = 'contain',
+  decoding = 'async',
+  loading = 'lazy',
+  style: customStyle,
 }) => {
   /**
    * กำหนดลำดับรูปที่จะลองโหลด:
@@ -59,20 +60,16 @@ const CustomImage: React.FC<CustomImageProps> = ({
    * 2) baseImage (ถ้ามี)
    * 3) fallbackSrc (ปิดท้ายเสมอ)
    */
-  const candidates = useMemo<(StaticImageData | StringSrc)[]>(
-    () => {
-      const list: (StaticImageData | StringSrc)[] = [];
-      if (isNonEmpty(src)) list.push(src);
-      if (isNonEmpty(baseImage)) list.push(baseImage);
-      list.push(fallbackSrc);
-      return list;
-    },
-    [src, baseImage, fallbackSrc]
-  );
+  const candidates = useMemo<(StaticImageData | StringSrc)[]>(() => {
+    const list: (StaticImageData | StringSrc)[] = [];
+    if (isNonEmpty(src)) list.push(src);
+    if (isNonEmpty(baseImage)) list.push(baseImage);
+    list.push(fallbackSrc);
+    return list;
+  }, [src, baseImage, fallbackSrc]);
 
   const [idx, setIdx] = useState(0);
 
-  // 🔧 FIX: ใช้ primitive dependencies แทน array reference
   useEffect(() => {
     setIdx(0);
   }, [src, baseImage, fallbackSrc]);
@@ -94,16 +91,18 @@ const CustomImage: React.FC<CustomImageProps> = ({
     );
 
   // เลือก props ของ <Image> ตามโหมด fill vs width/height
-  // 🔧 ตรวจสอบว่ามี width/height ครบเมื่อไม่ใช้ fill
-  const sizeProps = fill 
-    ? { fill: true as const } 
-    : { 
-        width: width ?? 300, 
-        height: height ?? 300 
+  const sizeProps = fill
+    ? { fill: true as const }
+    : {
+        width: width ?? 300,
+        height: height ?? 300,
       };
 
   // ปรับ style objectFit ให้ consistent
-  const style: React.CSSProperties = { objectFit: objectFit };
+  const style: React.CSSProperties = { 
+    objectFit: objectFit,
+    ...customStyle,
+  };
 
   /**
    * หมายเหตุ:
@@ -111,7 +110,7 @@ const CustomImage: React.FC<CustomImageProps> = ({
    *   ให้ส่ง `unoptimized` = true เพื่อหลีกเลี่ยง error และให้ Next ส่ง <img> ใต้ hood
    * - สำหรับรูป fallback ที่เป็น static import จะได้ประโยชน์จาก image optimization เต็มที่
    */
-  const isStringCurrent = typeof current === "string";
+  const isStringCurrent = typeof current === 'string';
 
   return (
     <Wrapper>
@@ -122,7 +121,7 @@ const CustomImage: React.FC<CustomImageProps> = ({
         priority={priority}
         unoptimized={isStringCurrent ? unoptimized : false}
         onError={handleError}
-        className={fill ? "" : className}
+        className={fill ? '' : className}
         style={style}
         decoding={decoding}
         loading={priority ? undefined : loading}

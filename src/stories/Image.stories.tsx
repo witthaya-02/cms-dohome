@@ -30,8 +30,7 @@ const meta: Meta<typeof CustomImage> = {
     priority: { control: 'boolean' },
     unoptimized: {
       control: 'boolean',
-      description:
-        'ถ้าใช้ external URL ที่ไม่ whitelist domain แนะนำให้เปิด true',
+      description: 'ถ้าใช้ external URL ที่ไม่ whitelist domain แนะนำให้เปิด true',
     },
     fallbackAlt: { control: 'text' },
     objectFit: {
@@ -130,13 +129,13 @@ export const FillMode: Story = {
   render: (args) => {
     // 🔧 สร้าง args ใหม่สำหรับ fill mode (ไม่มี width/height)
     const { width, height, ...fillArgs } = args;
-    
+
     return (
       <div className="p-8">
         <h3 className="text-lg font-semibold mb-3">Fill layout (no CLS)</h3>
         <p className="text-sm text-muted-foreground mb-4">
-          ควรห่อด้วย container ที่ <code>relative</code> และกำหนดขนาดชัดเจน
-          (เช่น fixed height หรือ aspect-ratio)
+          ควรห่อด้วย container ที่ <code>relative</code> และกำหนดขนาดชัดเจน (เช่น fixed height หรือ
+          aspect-ratio)
         </p>
         <div className="grid grid-cols-2 gap-8">
           <div>
