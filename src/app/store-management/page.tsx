@@ -1,10 +1,13 @@
 'use client';
 import BtnAction from '@/components/ui/button';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { Popup } from '@/components/ui/dialog';
 import { DatePickerCustom, DateRangePickerCustom } from '@/components/ui/custom/DatePickerCustom';
 import TableCustom from '@/components/ui/custom/TableCustom';
+import { DropdownMenuCustom } from '@/components/ui/custom/ComboboxCustom';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
 
 const StoreManagement = () => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
@@ -32,6 +35,7 @@ const StoreManagement = () => {
       editDate: '01/03/25 14:23:44',
       editBy: 'Admin3',
       status: 'status',
+      id: '1',
     },
     {
       name: 'test-2',
@@ -40,6 +44,7 @@ const StoreManagement = () => {
       editDate: '01/03/25 14:23:44',
       editBy: 'Admin3',
       status: 'status',
+      id: '2',
     },
     {
       name: 'test-3',
@@ -48,6 +53,7 @@ const StoreManagement = () => {
       editDate: '01/03/25 14:23:44',
       editBy: 'Admin3',
       status: 'status',
+      id: '3',
     },
     {
       name: 'test-4',
@@ -56,6 +62,7 @@ const StoreManagement = () => {
       editDate: '01/03/25 14:23:44',
       editBy: 'Admin3',
       status: 'status',
+      id: '4',
     },
     {
       name: 'test-5',
@@ -64,6 +71,7 @@ const StoreManagement = () => {
       editDate: '01/03/25 14:23:44',
       editBy: 'Admin3',
       status: 'status',
+      id: '5',
     },
     {
       name: 'test-6',
@@ -72,27 +80,9 @@ const StoreManagement = () => {
       editDate: '01/03/25 14:23:44',
       editBy: 'Admin3',
       status: 'status',
+      id: '6',
     },
   ];
-
-  const handleDateRangeUpdate = (
-    startDate: string,
-    startTime: string,
-    endDate: string | undefined,
-    endTime: string | undefined,
-    language: string
-  ) => {
-    if (startDate) return;
-    const stringDate = new Date(startDate).toLocaleDateString(language);
-    setTime(`${stringDate} ${time}`);
-    console.log('Start Date:', startDate); // ISO format: 2025-01-15T00:00:00.000Z
-    console.log('Start Time:', startTime); // 09:00:00
-    console.log('End Date:', endDate); // ISO format: 2025-01-20T00:00:00.000Z
-    console.log('End Time:', endTime); // 18:00:00
-    console.log('Language:', language); // en-GB
-
-    // ทำอะไรก็ได้กับข้อมูล เช่น บันทึกลง state หรือส่ง API
-  };
 
   const [time, setTime] = useState<string | undefined>();
 
@@ -101,36 +91,116 @@ const StoreManagement = () => {
     endDate: '',
   });
 
+  enum ActionType {
+    Create = 'create',
+    Update = 'update',
+    Duplicate = 'duplicate',
+    Delete = 'delete',
+    NoState = 'noSate',
+  }
+
+  const optionSort: { display: string; value: string }[] = [
+    { display: 'ช่องทางออนไลน์', value: 'online' },
+    { display: 'ช่องทางหน้าสาขา', value: 'offline' },
+    { display: 'Chat & Shop', value: 'chat_and_shop' },
+  ];
+
+  const popupActionType = useRef<{ type: ActionType; id: string }>({
+    type: ActionType.NoState,
+    id: '',
+  });
+
+  const currentFilterChanel = useRef<string>('online');
+  const currentFilterSearch = useRef<string>('');
+
+  const handlePopup = ({
+    isOpen,
+    type,
+    id,
+  }: {
+    isOpen: boolean;
+    type?: ActionType;
+    id?: string;
+  }) => {
+    if (isOpen && type) {
+      popupActionType.current = { type, id: id ?? '' };
+    } else {
+      popupActionType.current = { type: ActionType.NoState, id: '' };
+    }
+
+    setIsOpenPopup(isOpen);
+  };
+
+  const getTitlePopup = (): string => {
+    const title: Record<ActionType, string> = {
+      [ActionType.Create]: 'สร้างหน้าใหม่',
+      [ActionType.Update]: 'แก้ไขหน้า',
+      [ActionType.Delete]: 'ยืนยันการลบ',
+      [ActionType.Duplicate]: 'โคลนหน้าใหม่',
+      [ActionType.NoState]: '',
+    };
+    return title[popupActionType.current.type];
+  };
+
+  const handleRenderPopup = () => {
+    switch (popupActionType.current.type) {
+      case ActionType.Delete:
+        return (
+          <div className="">
+            <div className="">delete</div>
+          </div>
+        );
+      case ActionType.Create:
+      case ActionType.Update:
+      case ActionType.Duplicate:
+        return (
+          <div className="">
+            <div className="">test-from</div>
+            <DatePickerCustom
+              name={'test'}
+              id={'test'}
+              label={'วว/ดด/ปปปป'}
+              uiError={undefined}
+              selected={time}
+              emitUpdate={(date, time, language) => {
+                if (date) {
+                  const stringDate = new Date(date).toLocaleDateString(language);
+                  setTime(`${stringDate} ${time}`);
+                  // field.onChange(stringDate);
+                } else {
+                  setTime(undefined);
+                  // field.onChange(undefined);
+                }
+              }}
+            />
+          </div>
+        );
+      case ActionType.NoState:
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
+
+              <Switch
+            checked={true}
+            disabled={false}
+            onCheckedChange={() => {
+                
+            }}/>
+
       <Popup
         isOpen={isOpenPopup}
         title={{
-          display: 'Tracking Package',
+          display: getTitlePopup(),
           center: true,
         }}
-        closePopup={() => setIsOpenPopup(false)}
+        closePopup={() => handlePopup({ isOpen: false })}
         loading={false}
       >
-        <div className="pt-4 pb-6 mx-6">
-          <DatePickerCustom
-            name={'test'}
-            id={'test'}
-            label={'วว/ดด/ปปปป'}
-            uiError={undefined}
-            selected={time}
-            emitUpdate={(date, time, language) => {
-              if (date) {
-                const stringDate = new Date(date).toLocaleDateString(language);
-                setTime(`${stringDate} ${time}`);
-                // field.onChange(stringDate);
-              } else {
-                setTime(undefined);
-                // field.onChange(undefined);
-              }
-            }}
-          />
-        </div>
+        <div className="pt-4 pb-6 mx-6">{handleRenderPopup()}</div>
       </Popup>
 
       <div className="p-[30px] grid gap-[30px] bg-[#EAEFF3]">
@@ -230,7 +300,7 @@ const StoreManagement = () => {
           {title('Custom Homepage')}
           <div className="">
             <BtnAction
-              onClick={() => setIsOpenPopup(true)}
+              onClick={() => handlePopup({ isOpen: true, type: ActionType.Create })}
               isActive={true}
               wording="เพิ่มหน้าหลัก"
               type="button"
@@ -261,21 +331,52 @@ const StoreManagement = () => {
           </div>
         </div>
 
-        <div>
-          <DateRangePickerCustom
-            id="date-range"
-            name="dateRange"
-            selectedStart={filterDate.startDate}
-            selectedEnd={filterDate.endDate}
-            emitUpdate={(startDate, startTime, endDate, endTime, language) => {
-              if (startDate && endDate) {
-                setFilterDate({
-                  startDate: `${startDate} ${startTime}`,
-                  endDate: `${endDate} ${endTime}`,
-                });
-              }
-            }}
-          />
+        <div className="grid grid-cols-[1fr_2fr_1fr] gap-5">
+          <div className="flex flex-col gap-[8px] w-full">
+            <div className="text-[12px] font-[400] text-[#343A40]">ชื่อหน้า</div>
+            <Input
+              type="text"
+              placeholder="ค้นหาชื่อหน้า"
+              // loading={loadingAll}
+              value={currentFilterSearch.current}
+              onChange={(e) => {
+                currentFilterSearch.current = e.target.value;
+              }}
+            />
+          </div>
+
+          <div className="flex flex-col gap-[8px] w-full">
+            <div className="text-[12px] font-[400] text-[#343A40]">ระยะเวลาที่เผยแพร่</div>
+            <DateRangePickerCustom
+              id="date-range"
+              name="dateRange"
+              selectedStart={filterDate.startDate}
+              selectedEnd={filterDate.endDate}
+              emitUpdate={(startDate, startTime, endDate, endTime) => {
+                if (startDate && endDate) {
+                  setFilterDate({
+                    startDate: `${startDate} ${startTime}`,
+                    endDate: `${endDate} ${endTime}`,
+                  });
+                }
+              }}
+            />
+          </div>
+
+          <div className="flex flex-col gap-[8px] w-full">
+            <div className="text-[12px] font-[400] text-[#343A40]">สถานะเผยแพร่</div>
+            <DropdownMenuCustom
+              items={optionSort}
+              currentValue={currentFilterChanel.current}
+              uiError={false}
+              emit={(value) => {
+                if (value) {
+                  currentFilterChanel.current = value.value ?? '';
+                  console.log(value);
+                }
+              }}
+            />
+          </div>
         </div>
 
         <TableCustom
@@ -295,13 +396,13 @@ const StoreManagement = () => {
             endDate: (item) => <div>{item.editDate}</div>,
             status: (item) => <div className="text-center">{item.status}</div>,
             action: (item) => (
-              <div
-                onClick={() => {
-                  console.log(item);
-                }}
-                className="flex gap-[10px] items-center justify-center"
-              >
-                <div className="cursor-pointer">
+              <div className="flex gap-[10px] items-center justify-center">
+                <div
+                  className="cursor-pointer"
+                  onClick={() =>
+                    handlePopup({ isOpen: true, type: ActionType.Update, id: item.id })
+                  }
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="18"
@@ -329,7 +430,12 @@ const StoreManagement = () => {
                     />
                   </svg>
                 </div>
-                <div className="cursor-pointer">
+                <div
+                  className="cursor-pointer"
+                  onClick={() =>
+                    handlePopup({ isOpen: true, type: ActionType.Duplicate, id: item.id })
+                  }
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="18"
@@ -363,7 +469,12 @@ const StoreManagement = () => {
                     />
                   </svg>
                 </div>
-                <div className="cursor-pointer">
+                <div
+                  className="cursor-pointer"
+                  onClick={() =>
+                    handlePopup({ isOpen: true, type: ActionType.Delete, id: item.id })
+                  }
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"

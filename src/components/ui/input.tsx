@@ -117,7 +117,7 @@ function Input({ className, type, value, loading, onFocus, onBlur, ...props }: I
             'text-[20px] text-[#343A40]',
             'placeholder:text-[#B9B9B9]',
             'appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none',
-            'file:text-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30  flex h-full w-full min-w-0 rounded-md border border-[#E0E0E3] bg-transparent px-[12px] py-[9px] text-base transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed md:text-sm',
+            'file:text-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30  flex h-full w-full min-w-0 rounded-md border border-[#E0E0E3] bg-white px-[12px] py-[9px] text-base transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed md:text-sm',
             'focus-visible:border-orange focus-visible:ring-orange/50 focus-visible:ring-[1px]',
             'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
             'shadow-none',

@@ -39,6 +39,7 @@ type DateRangePickerProps = {
   selectedEnd?: string;
   disable?: boolean;
   uiError?: boolean;
+  className?: string;
 };
 
 // Single Date Picker Component
@@ -194,6 +195,7 @@ const DateRangePickerCustom: React.FC<DateRangePickerProps> = ({
   name,
   disable,
   uiError,
+  className
 }) => {
   const [open, setOpen] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
@@ -272,16 +274,16 @@ const DateRangePickerCustom: React.FC<DateRangePickerProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className={`flex flex-col gap-3 ${className}`}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <div className="flex gap-[10px] items-center">
+          <div className="grid grid-cols-[1fr_10px_1fr] gap-[10px] items-center">
             <Button
               variant="outline"
               id={id}
               name={name}
               className={`
-              w-[250px] h-full justify-between font-normal text-[14px] 
+              w-full h-full justify-between font-normal text-[14px] 
               ${disable ? 'bg-[#EFEFEF]' : ''} 
               ${uiError ? 'border border-[#D62828]' : open ? 'border border-orange' : ''}
             `}
@@ -330,7 +332,7 @@ const DateRangePickerCustom: React.FC<DateRangePickerProps> = ({
               id={id}
               name={name}
               className={`
-              w-[250px] h-full justify-between font-normal text-[14px] 
+              w-full h-full justify-between font-normal text-[14px] 
               ${disable ? 'bg-[#EFEFEF]' : ''} 
               ${uiError ? 'border border-[#D62828]' : open ? 'border border-orange' : ''}
             `}
