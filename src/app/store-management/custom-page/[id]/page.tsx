@@ -1,7 +1,9 @@
 'use client';
 import { DraggableList, DragProvider } from '@/components/DraggableSection';
 import React, { useState, useRef } from 'react';
-
+import mobileBlackIcon from '~/public/icons/ic-mobile-black.svg';
+import desktopBlackIcon from '~/public/icons/ic-desktop-black.svg';
+import Image from 'next/image';
 const CustomPageBuilder = () => {
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -9,6 +11,15 @@ const CustomPageBuilder = () => {
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [locked, setLocked] = useState(false); // state สำหรับ lock/unlock
   const containerRef = useRef<HTMLDivElement>(null);
+  const [currentScreen, setCurrentScreen] = useState<'mobile' | 'desktop'>('desktop');
+
+  const handleWidthScreen = () => {
+    if (currentScreen === 'mobile') {
+      return 'w-[350px]';
+    } else {
+      return 'w-[499px]';
+    }
+  };
 
   const [listItem, setListItem] = useState([
     { name: 'test-1', id: 'test-1', showOnAdd: true, showOnWeb: true, active: true },
@@ -90,7 +101,32 @@ const CustomPageBuilder = () => {
       type: string;
     }[]
   >([]);
+
   const [currentActiveWidget, setCurrentActiveWidget] = useState<string | null>(null);
+
+  const handleClickMoveWidget = (
+    direction: 'up' | 'down',
+    item: { moduleName: string; type: string },
+    index: number
+  ) => {
+    setWidget((prev) => {
+      const newWidgets = [...prev];
+
+      if (direction === 'up' && index > 0) {
+        const newIndex = index - 1;
+        [newWidgets[newIndex], newWidgets[index]] = [newWidgets[index], newWidgets[newIndex]];
+        setCurrentActiveWidget(`${item.moduleName}-${newIndex}`);
+      }
+
+      if (direction === 'down' && index < newWidgets.length - 1) {
+        const newIndex = index + 1;
+        [newWidgets[newIndex], newWidgets[index]] = [newWidgets[index], newWidgets[newIndex]];
+        setCurrentActiveWidget(`${item.moduleName}-${newIndex}`);
+      }
+
+      return newWidgets;
+    });
+  };
 
   // --- Zoom ---
   const handleWheel = (e: React.WheelEvent) => {
@@ -168,8 +204,24 @@ const CustomPageBuilder = () => {
 
   return (
     <DragProvider>
-      <div className="bg-[#fff] w-full h-[84px] flex justify-between border-b border-[#E0E0E3]">
-        <div>header</div>
+      <div className="relative bg-[#fff] px-[20px] w-full h-[84px] flex justify-between items-center border-b border-[#E0E0E3]">
+        <div className="">current-active-widget: {currentActiveWidget} </div>
+
+        <div className="absolute left-1/2 flex gap-[10px] bg-[#F8F9FA] h-[42px] rounded-[10px]">
+          <div
+            className={`${currentScreen === 'desktop' && 'shadow-[0_0_5px_0_rgba(0,0,0,0.6)] bg-white rounded-[10px] opacity-100'} opacity-50 w-[42px] h-[42px] cursor-pointer flex justify-center items-center`}
+            onClick={() => setCurrentScreen('desktop')}
+          >
+            <Image src={desktopBlackIcon} alt="ic-desktop" />
+          </div>
+          <div
+            className={`${currentScreen === 'mobile' && 'shadow-[0_0_5px_0_rgba(0,0,0,0.6)] bg-white rounded-[10px] opacity-100'} opacity-50 w-[42px] h-[42px] cursor-pointer flex justify-center items-center`}
+            onClick={() => setCurrentScreen('mobile')}
+          >
+            <Image src={mobileBlackIcon} alt="ic-desktop" />
+          </div>
+        </div>
+
         <button
           onClick={toggleLock}
           className={`px-4 py-2 rounded ${locked ? 'bg-green-500' : 'bg-blue-500'} text-white`}
@@ -178,7 +230,7 @@ const CustomPageBuilder = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-[345px_1fr_260px] h-[calc(100vh-84px)] w-screen">
+      <div className="grid grid-cols-[345px_1fr_260px] h-[calc(100vh-84px)] w-screen select-none">
         <div className="bg-[#fff] px-[16px] py-[20px]">
           {/* <div className="" onClick={()=> console.log(listItem)}>test</div> */}
           <DraggableList
@@ -335,20 +387,22 @@ const CustomPageBuilder = () => {
               transition: isDragging ? 'none' : 'transform 0.1s ease',
             }}
           >
-            {currentActiveWidget}
-            <div className={`bg-white w-[499px] mt-[20px] flex flex-col  h-[calc(100vh-84px)]`}>
+            <div
+              className={`${handleWidthScreen()} bg-white mt-[20px] flex flex-col  h-[calc(100vh-84px)]`}
+            >
               <DraggableList
                 id="widget"
-                className="flex flex-col hover:none"
+                className="flex flex-col p-[16px] hover:none"
                 data={widget}
                 hoverAnimation={false}
+                isReceiveList={true}
+                locked={true}
                 onDataChange={setWidget}
                 extractValue={(item) => ({
                   moduleName: item.title,
                   type: item.type,
                 })}
                 endDrop={(data, index) => {
-                  console.log('test-v:', data, index);
                   setCurrentActiveWidget(`${data?.moduleName}-${index ?? 0}`);
                 }}
                 itemSection={(item, index) => (
@@ -363,12 +417,15 @@ const CustomPageBuilder = () => {
                     </div>
                     {currentActiveWidget === `${item.moduleName}-${index}` ? (
                       <>
-                        <div className="absolute right-[calc(100%+20px)] top-1/2 -translate-y-1/2">
+                        <div className="absolute right-[calc(100%+30px)] top-1/2 -translate-y-1/2">
                           {label(true, item.moduleName)}
                         </div>
 
-                        <div className="absolute left-[calc(100%+20px)] top-1/2 -translate-y-1/2 flex flex-col gap-[10px]">
-                          <div className="bg-[#fff] border-0.5 border-[#E0E0E3] rounded-[10px] w-[30px] h-[30px] flex justify-center items-center cursor-pointer">
+                        <div className="absolute left-[calc(100%+30px)] top-1/2 -translate-y-1/2 flex flex-col gap-[10px]">
+                          <div
+                            onClick={() => handleClickMoveWidget('up', item, index)}
+                            className="bg-[#fff] border-0.5 border-[#E0E0E3] rounded-[10px] w-[30px] h-[30px] flex justify-center items-center cursor-pointer transition-all duration-200 hover:scale-120"
+                          >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               width="14"
@@ -385,7 +442,10 @@ const CustomPageBuilder = () => {
                             </svg>
                           </div>
 
-                          <div className="bg-[#fff] border-0.5 border-[#E0E0E3] rounded-[10px] w-[30px] h-[30px] flex justify-center items-center cursor-pointer">
+                          <div
+                            onClick={() => handleClickMoveWidget('down', item, index)}
+                            className="bg-[#fff] border-0.5 border-[#E0E0E3] rounded-[10px] w-[30px] h-[30px] flex justify-center items-center cursor-pointer transition-all duration-200 hover:scale-120"
+                          >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               width="14"
@@ -402,7 +462,7 @@ const CustomPageBuilder = () => {
                             </svg>
                           </div>
 
-                          <div className="bg-[#fff] border-0.5 border-[#E0E0E3] rounded-[10px] w-[30px] h-[30px] flex justify-center items-center cursor-pointer">
+                          <div className="bg-[#fff] border-0.5 border-[#E0E0E3] rounded-[10px] w-[30px] h-[30px] flex justify-center items-center cursor-pointer transition-all duration-200 hover:scale-120">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               width="14"
@@ -439,7 +499,7 @@ const CustomPageBuilder = () => {
                         </div>
                       </>
                     ) : (
-                      <div className="absolute right-[calc(100%+20px)] top-1/2 -translate-y-1/2">
+                      <div className="absolute right-[calc(100%+30px)] top-1/2 -translate-y-1/2">
                         {label(false, item.moduleName)}
                       </div>
                     )}

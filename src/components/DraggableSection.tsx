@@ -92,6 +92,8 @@ interface DraggableListProps<T> {
   // eslint-disable-next-line no-unused-vars
   onDataChange?: (newData: T[]) => void;
   isSourceList?: boolean;
+  isReceiveList?: boolean;
+  locked?: boolean;
   // eslint-disable-next-line no-unused-vars
   extractValue?: (item: any) => T;
   hoverAnimation?: boolean;
@@ -109,11 +111,15 @@ function DraggableList<T>({
   extractValue,
   hoverAnimation = true,
   endDrop,
+  isReceiveList,
+  locked = false,
 }: DraggableListProps<T>) {
   const [items, setItems] = useState<T[]>(data);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const listKey = React.useRef(`list_${Math.random()}`).current;
   const dragCtx = useContext(DragContext);
+
+  // const [pastAbleSection, setPastAbleSection] = useState<boolean>(false);
 
   React.useEffect(() => {
     setItems(data);
@@ -220,6 +226,7 @@ function DraggableList<T>({
   };
 
   const canAcceptDrag = !isSourceList && dragCtx?.draggedItem?.listId === id;
+  const isDraggingFromSource = dragCtx?.draggedItem?.isSourceList;
 
   return (
     <div
@@ -258,14 +265,44 @@ function DraggableList<T>({
       onDragLeave={() => setDragOverIndex(null)}
     >
       {items.map((item, index) => (
-        <div
-          key={index}
-          draggable
-          onDragStart={(e) => handleDragStart(e, index)}
-          onDragOver={(e) => handleDragOver(e, index)}
-          onDrop={(e) => handleDrop(e, index)}
-          onDragEnd={handleDragEnd}
-          className={`
+        <div key={index}>
+          {isReceiveList && locked ? (
+            <div>
+              {isDraggingFromSource && (
+                <div
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setDragOverIndex(index);
+                  }}
+                  onDrop={(e) => {
+                    e.stopPropagation();
+                    handleDrop(e, index);
+                  }}
+                  className={`
+                    p-8 border-2 h-full bg-[#FAE5DB] rounded-lg flex items-center justify-center text-center transition-colors my-[10px]
+                    ${
+                      dragOverIndex === index && canAcceptDrag
+                        ? 'border-[#ee5d1f] text-[#ee5d1f] border-solid'
+                        : 'border-[#F26529] text-[#F26529] border-dashed'
+                    }
+                  `}
+                >
+                  วาง Widget ตรงนี้
+                </div>
+              )}
+
+              <div className="h-full">{itemSection(item, index)}</div>
+            </div>
+          ) : (
+            <div
+              key={index}
+              draggable
+              onDragStart={(e) => handleDragStart(e, index)}
+              onDragOver={(e) => handleDragOver(e, index)}
+              onDrop={(e) => handleDrop(e, index)}
+              onDragEnd={handleDragEnd}
+              className={`
             h-full
             ${hoverAnimation && 'transition-all duration-200 hover:scale-[1.02]'}
             ${
@@ -275,20 +312,46 @@ function DraggableList<T>({
             }
             ${dragCtx?.draggedItem?.listKey === listKey && dragCtx?.draggedItem?.index === index && !isSourceList ? 'opacity-50' : ''}
           `}
-        >
-          {itemSection(item, index)}
+            >
+              {itemSection(item, index)}
+            </div>
+          )}
         </div>
       ))}
+
+      {isReceiveList && isDraggingFromSource && items.length > 0 && (
+        <div
+          onDragOver={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setDragOverIndex(items.length);
+          }}
+          onDrop={(e) => {
+            e.stopPropagation();
+            handleDrop(e, items.length);
+          }}
+          className={`
+            p-8 border-2 h-full bg-[#FAE5DB] rounded-lg flex items-center justify-center text-center transition-colors my-[10px]
+            ${
+              dragOverIndex === items.length && canAcceptDrag
+                ? 'border-[#ee5d1f] text-[#ee5d1f] border-solid'
+                : 'border-[#F26529] text-[#F26529] border-dashed'
+            }
+          `}
+        >
+          วาง Widget ตรงนี้
+        </div>
+      )}
 
       {items.length === 0 && !isSourceList && (
         <div
           onDrop={(e) => handleDrop(e, 0)}
           className={`
-          p-8 border-2 h-full border-dashed rounded-lg flex items-center justify-center text-center transition-colors
-          ${dragOverIndex === 0 && canAcceptDrag ? 'border-blue-400 bg-blue-50' : 'border-gray-300 text-gray-400'}
+          p-8 border-2 h-full bg-[#FAE5DB] rounded-lg flex items-center justify-center text-center transition-colors
+          ${dragOverIndex === 0 && canAcceptDrag ? 'border-[#ee5d1f] text-[#ee5d1f] border-solid' : 'border-[#F26529] text-[#F26529] border-dashed'}
         `}
         >
-          Drop items here
+          วาง Widget
         </div>
       )}
     </div>
