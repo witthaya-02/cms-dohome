@@ -7,10 +7,57 @@ import { DatePickerCustom, DateRangePickerCustom } from '@/components/ui/custom/
 import TableCustom from '@/components/ui/custom/TableCustom';
 import { DropdownMenuCustom } from '@/components/ui/custom/ComboboxCustom';
 import { Input } from '@/components/ui/input';
-import { Switch } from '@/components/ui/switch';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import {
+  Form,
+  FormControl,
+  //   FormDescription,
+  FormField,
+  //   FormInput,
+  //   FormInput,
+  FormItem,
+  //   FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+
+const formSchema = z.object({
+  namePage: z.string().min(1, 'กรุณากรอก'),
+  startDate: z.string().min(1, 'กรุณากรอก'),
+  endDate: z.string().optional(),
+});
+
+type FormSchema = z.infer<typeof formSchema>;
 
 const StoreManagement = () => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
+
+  const form = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
+    defaultValues: {
+      namePage: '',
+      startDate: '',
+      endDate: '',
+    },
+  });
+
+  const onSubmit = async (formValue: FormSchema) => {
+    console.log('test', formValue);
+  };
+
+  const watchedValues = form.watch(['namePage', 'startDate', 'endDate'] as const);
+
+  // ฟังก์ชันเช็คว่ากรอกครบทุก required field หรือยัง
+  const isRequiredFilled = watchedValues.every((val) => {
+    if (typeof val === 'string') {
+      return val.trim() !== '';
+    }
+    return val !== undefined && val !== null && val !== '';
+  });
 
   const title = (title: string) => <div className="text-[28px] font-[700]">{title}</div>;
 
@@ -84,8 +131,6 @@ const StoreManagement = () => {
     },
   ];
 
-  const [time, setTime] = useState<string | undefined>();
-
   const [filterDate, setFilterDate] = useState({
     startDate: '',
     endDate: '',
@@ -155,24 +200,103 @@ const StoreManagement = () => {
       case ActionType.Duplicate:
         return (
           <div className="">
-            <div className="">test-from</div>
-            <DatePickerCustom
-              name={'test'}
-              id={'test'}
-              label={'วว/ดด/ปปปป'}
-              uiError={undefined}
-              selected={time}
-              emitUpdate={(date, time, language) => {
-                if (date) {
-                  const stringDate = new Date(date).toLocaleDateString(language);
-                  setTime(`${stringDate} ${time}`);
-                  // field.onChange(stringDate);
-                } else {
-                  setTime(undefined);
-                  // field.onChange(undefined);
-                }
-              }}
-            />
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <div className="grid grid-cols-1 gap-[14px] w-full max-w-screen md:max-w-[740px]">
+                  <FormField
+                    control={form.control}
+                    name="namePage"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="text-[12px]">
+                          ชื่อหน้า <span className="text-red-500">*</span>
+                        </div>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="กรอกชื่อหน้า"
+                            // loading={loadingAll}
+                            value={field.value}
+                            onChange={(e) => {
+                              field.onChange(e);
+                            }}
+                            disabled={false}
+                          />
+                        </FormControl>
+                        <FormMessage showSpace={true} />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="startDate"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="text-[12px]">
+                          วันเริ่ม <span className="text-red-500">*</span>
+                        </div>
+                        <FormControl>
+                          <DatePickerCustom
+                            name={field.name}
+                            id={field.name}
+                            label={'เลือกวันเริ่ม'}
+                            uiError={undefined}
+                            selected={field.value}
+                            emitUpdate={(date, time) => {
+                              if (date) {
+                                field.onChange(`${date} ${time}`);
+                              } else {
+                                field.onChange(undefined);
+                              }
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage showSpace={true} />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="endDate"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="text-[12px]">
+                          วันสิ้นสุด <span className="text-red-500">*</span>
+                        </div>
+                        <FormControl>
+                          <DatePickerCustom
+                            name={field.name}
+                            id={field.name}
+                            label={'เลือกวันสิ้นสุด'}
+                            uiError={undefined}
+                            selected={field.value}
+                            emitUpdate={(date, time) => {
+                              if (date) {
+                                field.onChange(`${date} ${time}`);
+                              } else {
+                                field.onChange(undefined);
+                              }
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage showSpace={true} />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="sticky bottom-0 bg-white p-[15px] md:p-0 flex justify-center items-center w-full ">
+                  <BtnAction
+                    isActive={isRequiredFilled}
+                    wording="บันทึก"
+                    type="submit"
+                    size={{ h: 40, w: 182 }}
+                  />
+                </div>
+              </form>
+            </Form>
           </div>
         );
       case ActionType.NoState:
@@ -183,8 +307,6 @@ const StoreManagement = () => {
 
   return (
     <>
-      <Switch checked={true} disabled={false} onCheckedChange={() => {}} />
-
       <Popup
         isOpen={isOpenPopup}
         title={{

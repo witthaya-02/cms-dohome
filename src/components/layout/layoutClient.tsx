@@ -1,15 +1,24 @@
 'use client';
-
 import { useState } from 'react';
-import { SidebarTrigger } from '@/components/ui/sidebar';
+import { useParams, usePathname } from 'next/navigation';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/add-slide';
 import Link from 'next/link';
 
 export default function LayoutClient({ children }: { children: React.ReactNode }) {
   const [breadcrumb, setBreadcrumb] = useState<{ title: string; url: string }[]>([]);
+  const params = useParams();
+  const pathname = usePathname();
+
+  const id = params?.id as string | undefined;
+  const isCustomPage = pathname?.includes('store-management/custom-page') && id && id !== '';
+
+  if (isCustomPage) {
+    return <div className="bg-[#F7F7F7] w-full h-full">{children}</div>;
+  }
 
   return (
-    <>
+    <SidebarProvider>
       <AppSidebar updateBreadcrumb={setBreadcrumb} />
       <main className="w-full">
         <header className="p-[20px] border-b-[1px] border-[#E0E0E3] bg-white w-full flex items-center justify-between">
@@ -49,6 +58,6 @@ export default function LayoutClient({ children }: { children: React.ReactNode }
         </header>
         <div className="bg-[#F7F7F7] w-full h-full">{children}</div>
       </main>
-    </>
+    </SidebarProvider>
   );
 }
