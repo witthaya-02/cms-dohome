@@ -7,8 +7,6 @@ import Image from 'next/image';
 const CustomPageBuilder = () => {
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [locked, setLocked] = useState(false); // state สำหรับ lock/unlock
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentScreen, setCurrentScreen] = useState<'mobile' | 'desktop'>('desktop');
@@ -139,27 +137,6 @@ const CustomPageBuilder = () => {
       setScale((prev) => Math.max(prev - zoomIntensity, 0.5));
     }
   };
-
-  // --- Drag ---
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (locked) return; // ห้าม drag ถ้า lock
-    setIsDragging(true);
-    setDragStart({
-      x: e.clientX - position.x,
-      y: e.clientY - position.y,
-    });
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (locked || !isDragging) return;
-    setPosition({
-      x: e.clientX - dragStart.x,
-      y: e.clientY - dragStart.y,
-    });
-  };
-
-  const handleMouseUp = () => setIsDragging(false);
-  const handleMouseLeave = () => setIsDragging(false);
 
   // --- Toggle Lock ---
   const toggleLock = () => {
@@ -371,12 +348,8 @@ const CustomPageBuilder = () => {
           ref={containerRef}
           className={`${locked ? 'overflow-scroll' : 'overflow-hidden'} relative w-full h-full flex justify-center`}
           onWheel={handleWheel}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseLeave}
           style={{
-            cursor: locked ? 'default' : isDragging ? 'grabbing' : 'grab',
+            cursor: locked ? 'default' : 'grab',
           }}
         >
           <div
@@ -384,7 +357,7 @@ const CustomPageBuilder = () => {
               transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
               transformOrigin: 'center center',
               //   transformOrigin: 'top left',
-              transition: isDragging ? 'none' : 'transform 0.1s ease',
+              transition: 'transform 0.1s ease',
             }}
           >
             <div
